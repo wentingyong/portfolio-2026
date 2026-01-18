@@ -1,0 +1,14 @@
+.homeExperience {
+  position: relative;
+  width: 100%;
+}
+
+.homeExperience__horizontalTrack {
+  position: relative;
+  will-change: transform;
+}
+
+// Ensure smooth scrolling
+.homeExperience {
+  overflow-x: hidden;
+}

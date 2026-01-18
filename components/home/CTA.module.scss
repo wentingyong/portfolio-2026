@@ -1,0 +1,23 @@
+.cta {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 4rem);
+  border: 6px solid #ff6600; // Orange border for testing
+  box-sizing: border-box;
+}
+
+.cta__content {
+  text-align: center;
+  max-width: 800px;
+}
+
+.cta__title {
+  margin-bottom: 1rem;
+}
+
+.cta__text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}

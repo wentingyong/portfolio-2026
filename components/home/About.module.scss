@@ -1,0 +1,22 @@
+.about {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 6px solid #0066ff; // Blue border for testing
+  box-sizing: border-box;
+}
+
+.about__content {
+  text-align: center;
+}
+
+.about__title {
+  margin-bottom: 1rem;
+}
+
+.about__text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}

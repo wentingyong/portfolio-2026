@@ -1,0 +1,22 @@
+.hero {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 6px solid #ff0000; // Red border for testing
+  box-sizing: border-box;
+}
+
+.hero__content {
+  text-align: center;
+}
+
+.hero__title {
+  margin-bottom: 1rem;
+}
+
+.hero__text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}

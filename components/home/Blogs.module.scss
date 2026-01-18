@@ -1,0 +1,36 @@
+.blogs {
+  width: 100vw;
+  min-height: 100vh;
+  padding: clamp(2rem, 4vw, 4rem);
+  border: 6px solid #9900ff; // Purple border for testing
+  box-sizing: border-box;
+}
+
+.blogs__content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blogs__title {
+  margin-bottom: 2rem;
+}
+
+.blogs__text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: 2rem;
+}
+
+.blogs__spacer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.blogs__item {
+  padding: 2rem;
+  border: 3px solid #000;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
