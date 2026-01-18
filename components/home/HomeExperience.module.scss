@@ -1,14 +1,26 @@
 .homeExperience {
   position: relative;
   width: 100%;
+  overflow-x: hidden;
+}
+
+.homeExperience__sequence {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .homeExperience__horizontalTrack {
   position: relative;
+  display: flex;
+  height: 100%;
   will-change: transform;
 }
 
-// Ensure smooth scrolling
-.homeExperience {
-  overflow-x: hidden;
+.homeExperience__panel {
+  flex: 0 0 100vw;
+  height: 100%;
+  overflow: hidden;
 }
