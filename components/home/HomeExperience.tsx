@@ -19,11 +19,11 @@ if (typeof window !== 'undefined') {
 export function HomeExperience() {
   const containerRef = useRef<HTMLDivElement>(null)
   const horizontalTrackRef = useRef<HTMLDivElement>(null)
-  const heroRef = useRef<HTMLElement>(null)
-  const aboutRef = useRef<HTMLElement>(null)
-  const projectsRef = useRef<HTMLElement>(null)
-  const blogsRef = useRef<HTMLElement>(null)
-  const ctaRef = useRef<HTMLElement>(null)
+  const heroRef = useRef<HTMLDivElement>(null)
+  const aboutRef = useRef<HTMLDivElement>(null)
+  const projectsRef = useRef<HTMLDivElement>(null)
+  const blogsRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
 
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
@@ -76,7 +76,7 @@ export function HomeExperience() {
         pin: about,
         pinSpacing: true,
         anticipatePin: 1,
-        onComplete: () => {
+        onLeave: () => {
           setAboutTimelineComplete(true)
         },
       })
@@ -97,7 +97,7 @@ export function HomeExperience() {
             x: `-${100 + progress * 100}vw`,
           })
         },
-        onComplete: () => {
+        onLeave: () => {
           // Hide horizontal track, let Projects scroll normally
           gsap.set(horizontalTrack, { display: 'none' })
         },
@@ -138,20 +138,20 @@ export function HomeExperience() {
   return (
     <div className={styles.homeExperience} ref={containerRef}>
       <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
-        <div ref={(el) => (heroRef.current = el as HTMLElement)}>
+        <div ref={heroRef}>
           <Hero />
         </div>
-        <div ref={(el) => (aboutRef.current = el as HTMLElement)}>
+        <div ref={aboutRef}>
           <About onTimelineComplete={() => setAboutTimelineComplete(true)} />
         </div>
       </div>
-      <div ref={(el) => (projectsRef.current = el as HTMLElement)}>
+      <div ref={projectsRef}>
         <Projects />
       </div>
-      <div ref={(el) => (blogsRef.current = el as HTMLElement)}>
+      <div ref={blogsRef}>
         <Blogs />
       </div>
-      <div ref={(el) => (ctaRef.current = el as HTMLElement)}>
+      <div ref={ctaRef}>
         <CTA />
       </div>
     </div>

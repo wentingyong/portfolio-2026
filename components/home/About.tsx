@@ -28,7 +28,7 @@ export function About({ onTimelineComplete }: AboutProps) {
           end: '+=100vh', // Animation completes over 100vh of scroll
           scrub: true,
           pin: false, // Pin is handled by parent orchestrator
-          onComplete: () => {
+          onScrubComplete: () => {
             onTimelineComplete?.()
           },
         },
