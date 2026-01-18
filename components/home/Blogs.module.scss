@@ -1,6 +1,7 @@
 .blogs {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: clamp(2rem, 4vw, 4rem);
   border: 6px solid #9900ff; // Purple border for testing
   box-sizing: border-box;
