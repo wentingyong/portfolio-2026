@@ -12,10 +12,13 @@ export function useIsMobile(): boolean {
     if (typeof window === 'undefined') return
 
     const checkMobile = () => {
-      // Check for touch device and/or small screen
-      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      // Treat small screens as mobile; only treat touch devices as mobile when pointer is coarse.
       const isSmallScreen = window.innerWidth < 1024
-      setIsMobile(hasTouch || isSmallScreen)
+      const hasCoarsePointer =
+        window.matchMedia?.('(pointer: coarse)').matches ||
+        window.matchMedia?.('(hover: none)').matches ||
+        navigator.maxTouchPoints > 0
+      setIsMobile(isSmallScreen || hasCoarsePointer)
     }
 
     checkMobile()

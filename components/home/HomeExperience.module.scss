@@ -24,3 +24,23 @@
   height: 100%;
   overflow: hidden;
 }
+
+.homeExperience--vertical .homeExperience__sequence {
+  height: auto;
+  overflow: visible;
+}
+
+.homeExperience--vertical .homeExperience__horizontalTrack {
+  display: block;
+  height: auto;
+  transform: none;
+  width: 100%;
+  will-change: auto;
+}
+
+.homeExperience--vertical .homeExperience__panel {
+  flex: 0 0 auto;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
