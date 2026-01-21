@@ -3,64 +3,22 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { EffectComposer, ChromaticAberration, Vignette } from '@react-three/postprocessing'
 import { BlendFunction, Effect } from 'postprocessing'
-import { Color, Uniform, Vector2 } from 'three'
 import type { ChromaticAberrationEffect } from 'postprocessing'
-import { useThree } from '@react-three/fiber'
+import { Color, Uniform, Vector2 } from 'three'
+import { useThree } from './r3f'
 import { useCrtImpulse } from '@/lib/motion/useCrtImpulse'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
-
-export type FxPreset = 'low' | 'medium' | 'high'
-
-// Tune effect intensity + performance presets here.
-export const FX_PRESETS: Record<
-  FxPreset,
-  {
-    dpr: number
-    enablePostFx: boolean
-    scanlines: { opacity: number; speed: number }
-    chromatic: { enabled: boolean; base: number; boost: number; vertical: number }
-    vignette: { enabled: boolean; offset: number; darkness: number }
-    curvature: { enabled: boolean; amount: number }
-    impulse: { max: number; scroll: number; click: number; decayRate: number }
-  }
-> = {
-  low: {
-    dpr: 1,
-    enablePostFx: true, // Set false to disable postprocessing on low.
-    scanlines: { opacity: 0.08, speed: 26 },
-    chromatic: { enabled: false, base: 0, boost: 0, vertical: 0.6 },
-    vignette: { enabled: true, offset: 0.44, darkness: 0.32 },
-    curvature: { enabled: false, amount: 0 },
-    impulse: { max: 0.6, scroll: 0.035, click: 0.12, decayRate: 3.8 },
-  },
-  medium: {
-    dpr: 1.25,
-    enablePostFx: true,
-    scanlines: { opacity: 0.1, speed: 24 },
-    chromatic: { enabled: true, base: 0.00035, boost: 0.0021, vertical: 0.65 },
-    vignette: { enabled: true, offset: 0.4, darkness: 0.38 },
-    curvature: { enabled: true, amount: 0.018 },
-    impulse: { max: 1, scroll: 0.05, click: 0.2, decayRate: 3.6 },
-  },
-  high: {
-    dpr: 1.5,
-    enablePostFx: true,
-    scanlines: { opacity: 0.11, speed: 20 },
-    chromatic: { enabled: true, base: 0.00045, boost: 0.0026, vertical: 0.7 },
-    vignette: { enabled: true, offset: 0.38, darkness: 0.4 },
-    curvature: { enabled: true, amount: 0.022 },
-    impulse: { max: 1, scroll: 0.06, click: 0.22, decayRate: 3.4 },
-  },
-}
+import { FX_PRESETS, type FxPreset } from './fxConfig'
 
 const CURVATURE_FRAGMENT = `
 uniform float curvature;
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
-  vec2 centered = uv - 0.5;
-  float radius = dot(centered, centered);
-  vec2 distorted = uv + centered * radius * curvature;
-  vec2 clampedUv = clamp(distorted, 0.0, 1.0);
+  vec2 centered = uv * 2.0 - 1.0;
+  float dist = dot(centered, centered);
+  centered *= 1.0 + curvature * dist;
+  vec2 warped = centered * 0.5 + 0.5;
+  vec2 clampedUv = clamp(warped, 0.0, 1.0);
   outputColor = texture2D(inputBuffer, clampedUv);
 }
 `
