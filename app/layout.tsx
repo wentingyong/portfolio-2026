@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Antonio, Space_Mono } from 'next/font/google'
+import { Nav } from '@/components/shell/Nav'
 // import { SiteShell } from '@/components/shell/SiteShell'
 import '@/styles/globals.scss'
 
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${antonio.variable} ${spaceMono.variable}`}>
       <body>
         {/* <SiteShell>{children}</SiteShell> */}
+        <Nav />
         {children}
       </body>
     </html>
