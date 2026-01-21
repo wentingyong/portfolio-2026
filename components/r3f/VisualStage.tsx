@@ -1,24 +1,15 @@
 'use client'
 
-import { Canvas } from '@react-three/fiber'
+import { Canvas } from './r3f'
 import { useMemo } from 'react'
 import { Color } from 'three'
 import { useSearchParams } from 'next/navigation'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
-import { CrtDomOverlay } from './CrtDomOverlay'
-import { FX_PRESETS, PostFX, type FxPreset } from './PostFX'
+import { PostFX } from './PostFX'
+import { CrtNoisePlane } from './CrtNoisePlane'
+import { FX_PRESETS } from './fxConfig'
+import { DEFAULT_PRESET, normalizePreset } from './fxPreset'
 import styles from './VisualStage.module.scss'
-
-const DEFAULT_PRESET: FxPreset = 'medium'
-
-function normalizePreset(value: string | null): FxPreset | null {
-  if (!value) return null
-  const normalized = value.toLowerCase()
-  if (normalized === 'low') return 'low'
-  if (normalized === 'med' || normalized === 'medium') return 'medium'
-  if (normalized === 'high') return 'high'
-  return null
-}
 
 export function VisualStage() {
   const reducedMotion = useReducedMotion()
@@ -32,9 +23,6 @@ export function VisualStage() {
 
   const presetConfig = FX_PRESETS[preset]
   const dpr = reducedMotion ? 1 : presetConfig.dpr
-  const scanlineOpacity = reducedMotion
-    ? presetConfig.scanlines.opacity * 0.45
-    : presetConfig.scanlines.opacity
 
   return (
     <div className={styles.visualStage} aria-hidden="true">
@@ -52,12 +40,9 @@ export function VisualStage() {
           scene.background = new Color(bg || '#000000')
         }}
       >
+        <CrtNoisePlane opacity={preset === 'low' ? 0.03 : 0.06} />
         <PostFX preset={preset} reducedMotion={reducedMotion} />
       </Canvas>
-      <CrtDomOverlay
-        opacity={scanlineOpacity}
-        speedSeconds={presetConfig.scanlines.speed}
-      />
     </div>
   )
 }
