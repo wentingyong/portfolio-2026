@@ -119,23 +119,23 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
 
   return (
     <EffectComposer>
-      {curvatureEnabled && <primitive object={curvatureEffect} />}
-      {chromaticEnabled && (
+      {curvatureEnabled ? <primitive object={curvatureEffect} /> : null}
+      {chromaticEnabled ? (
         <ChromaticAberration
           ref={chromaRef}
           offset={chromaOffset.current}
           radialModulation
           modulationOffset={modulationOffset}
         />
-      )}
-      {vignetteEnabled && (
+      ) : null}
+      {vignetteEnabled ? (
         <Vignette
           eskil={false}
           offset={config.vignette.offset}
           darkness={vignetteDarkness}
           color={vignetteColor.current}
         />
-      )}
+      ) : null}
     </EffectComposer>
   )
 }
