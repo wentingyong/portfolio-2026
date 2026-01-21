@@ -19,8 +19,11 @@ export function Hero() {
         </header>
 
         <div className={styles.hero__content}>
+          <div className={styles.hero__contentInner}>
           <div className={styles.hero__row}>
-            <h1 className={styles.hero__title}>Design</h1>
+            <h1 className={styles.hero__title}>
+              <span className={styles.hero__titleText}>Design</span>
+            </h1>
             <div className={styles.hero__imageContainer}>
               <img
                 className={styles.hero__image}
@@ -42,25 +45,31 @@ export function Hero() {
                 decoding="async"
               />
             </div>
-            <h1 className={styles.hero__title}>Engineer</h1>
+            <h1 className={styles.hero__title}>
+              <span className={styles.hero__titleText}>Engineer</span>
+            </h1>
           </div>
 
           <div className={styles.hero__row}>
-            <h1 className={styles.hero__title}>Wenting</h1>
+            <h1 className={styles.hero__title}>
+              <span className={styles.hero__titleText}>Wenting</span>
+            </h1>
             <span className={styles.hero__atSymbol}>@</span>
-            <h1 className={styles.hero__title}>Yong</h1>
+            <h1 className={styles.hero__title}>
+              <span className={styles.hero__titleText}>Yong</span>
+            </h1>
           </div>
-        </div>
-
+          </div>
+        
         <h2 className={styles.hero__subtitle}>
           Crafting immersive web experiences & digital interfaces
         </h2>
-
-        <div className={styles.hero__bottom}>
+        </div>
           <Nav />
+        <div className={styles.hero__bottom}>
           <div className={styles.hero__meta}>
             <small className={styles.hero__metaItem}>
-              Comm links:{' '}
+              [Comm links:{' '}
               <a
                 className={styles.hero__metaLink}
                 href="https://github.com"
@@ -87,12 +96,13 @@ export function Hero() {
               >
                 X
               </a>
-            </small>
-            <small className={styles.hero__metaItem}>Version: ©2025</small>
-            <small className={styles.hero__metaItem}>
-              Location: Canada/{timezone} {timeString}
+              ]
             </small>
           </div>
+            <small className={styles.hero__bottomText}>Version: ©2026</small>
+            <small className={styles.hero__bottomText}>
+              Location: Canada/{timezone} {timeString}
+            </small>
         </div>
       </div>
     </section>

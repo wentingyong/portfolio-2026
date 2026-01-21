@@ -58,14 +58,14 @@ h5,
 h6 {
   margin: 0;
   font-family: $font-display;
-  line-height: 1.1;
+  line-height: 1;
   text-transform: uppercase;
 }
 
 h1 {
   font-size: $fs-h1;
   font-weight: 700;
-  line-height: 0.85;
+  line-height: 1;
   letter-spacing: 0.04em;
  
 }
@@ -93,6 +93,9 @@ nav {
 small {
   font-size: $fs-small;
   letter-spacing: 0.12em;
+  font-weight: 400;
+ 
+  text-transform: uppercase;
  
 }
 

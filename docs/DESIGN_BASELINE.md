@@ -1,0 +1,5 @@
+-Baseline: 1440×1080
+-vwMin=375, vwMax=1440
+-Stack-first mobile
+-Allowed: Grid/Flex + clamp tokens
+-Forbidden: absolute layout mirroring (except decoration)

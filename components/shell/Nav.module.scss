@@ -1,9 +1,14 @@
 .nav {
-  display: flex;
+  display: ob;
   gap: $spacing-sm;
   align-items: flex-start;
   padding: $spacing-xs $spacing-sm;
   border: $border-thin solid $color-border;
+  position: absolute;
+  bottom: $spacing-lg;
+  left: $spacing-xl;
+  right:auto;
+  z-index: $z-layer-1;
 }
 
 .nav__label {
