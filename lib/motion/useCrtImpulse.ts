@@ -38,8 +38,10 @@ interface CrtImpulseOptions {
 }
 
 export function useCrtImpulse(options: CrtImpulseOptions = {}) {
-  const reducedMotion = options.reducedMotion ?? useReducedMotion()
-  const coarsePointer = options.coarsePointer ?? useCoarsePointer()
+  const reducedMotionPref = useReducedMotion()
+  const coarsePointerPref = useCoarsePointer()
+  const reducedMotion = options.reducedMotion ?? reducedMotionPref
+  const coarsePointer = options.coarsePointer ?? coarsePointerPref
   const enabled = options.enabled ?? true
 
   const config = useMemo(() => {

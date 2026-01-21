@@ -4,25 +4,17 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { DEFAULT_PRESET, normalizePreset } from './fxPreset'
+import {
+  DEFAULT_WARP_POWER,
+  WARP_SCALES,
+  normalizeWarp,
+} from './crtWarpConfig'
 import styles from './CrtDomWarp.module.scss'
 
-const WARP_SCALES = {
-  low: 40,
-  medium: 60,
-  high: 85,
-}
-
 const MAP_MAX_SIZE = 256
-const MAP_POWER = 2.8
-
-function normalizeWarp(value: string | null): number | null {
-  if (!value) return null
-  const normalized = value.toLowerCase().trim()
-  if (normalized === 'off' || normalized === '0' || normalized === 'false') {
-    return 0
-  }
-  const numeric = Number.parseFloat(normalized)
-  return Number.isFinite(numeric) ? numeric : null
+interface CrtDebugDetail {
+  warpScale?: number | null
+  warpPower?: number | null
 }
 
 function getMapDimensions(target: HTMLElement) {
@@ -82,10 +74,9 @@ export function CrtDomWarp() {
   const fxParam = searchParams?.get('fx') ?? null
   const warpParam = searchParams?.get('warp') ?? null
   const [mapUrl, setMapUrl] = useState<string | null>(null)
-  const previousFilter = useRef<{ target: HTMLElement | null; value: string }>({
-    target: null,
-    value: '',
-  })
+  const [debugWarpScale, setDebugWarpScale] = useState<number | null>(null)
+  const [debugWarpPower, setDebugWarpPower] = useState<number | null>(null)
+  const previousTargetRef = useRef<HTMLElement | null>(null)
   const targetRef = useRef<HTMLElement | null>(null)
   const mapKeyRef = useRef<string | null>(null)
 
@@ -95,44 +86,71 @@ export function CrtDomWarp() {
   }, [fxParam])
 
   const warpScale = useMemo(() => {
+    if (typeof debugWarpScale === 'number') return debugWarpScale
     const override = normalizeWarp(warpParam)
     if (override === 0) return 0
     if (typeof override === 'number') return override
     const base = WARP_SCALES[preset]
     return reducedMotion ? base * 0.45 : base
-  }, [preset, reducedMotion, warpParam])
+  }, [debugWarpScale, preset, reducedMotion, warpParam])
+
+  const warpPower =
+    typeof debugWarpPower === 'number' ? debugWarpPower : DEFAULT_WARP_POWER
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const handleDebug = (event: Event) => {
+      const detail = (event as CustomEvent<CrtDebugDetail>).detail
+      if (!detail) return
+      if (Object.prototype.hasOwnProperty.call(detail, 'warpScale')) {
+        setDebugWarpScale(
+          typeof detail.warpScale === 'number' ? detail.warpScale : null,
+        )
+      }
+      if (Object.prototype.hasOwnProperty.call(detail, 'warpPower')) {
+        setDebugWarpPower(
+          typeof detail.warpPower === 'number' ? detail.warpPower : null,
+        )
+      }
+    }
+
+    window.addEventListener('crt-debug', handleDebug as EventListener)
+    return () => window.removeEventListener('crt-debug', handleDebug as EventListener)
+  }, [])
 
   useEffect(() => {
     if (typeof document === 'undefined') return
     const target = document.querySelector<HTMLElement>('[data-crt-warp]')
 
     if (!target) {
-      if (previousFilter.current.target) {
-        previousFilter.current.target.style.filter = previousFilter.current.value
+      if (previousTargetRef.current) {
+        previousTargetRef.current.classList.remove(styles.warpTarget)
       }
+      previousTargetRef.current = null
       targetRef.current = null
       mapKeyRef.current = null
       setMapUrl(null)
       return
     }
 
-    if (previousFilter.current.target && previousFilter.current.target !== target) {
-      previousFilter.current.target.style.filter = previousFilter.current.value
+    if (previousTargetRef.current && previousTargetRef.current !== target) {
+      previousTargetRef.current.classList.remove(styles.warpTarget)
+      mapKeyRef.current = null
+      setMapUrl(null)
     }
 
+    previousTargetRef.current = target
     targetRef.current = target
-    if (previousFilter.current.target !== target) {
-      previousFilter.current = { target, value: target.style.filter }
-    }
 
     const updateMap = () => {
       const currentTarget = targetRef.current
       if (!currentTarget) return
       const { width, height } = getMapDimensions(currentTarget)
-      const key = `${width}x${height}`
+      const key = `${width}x${height}:${warpPower.toFixed(3)}`
       if (mapKeyRef.current === key) return
       mapKeyRef.current = key
-      const url = createRadialMap(width, height, MAP_POWER)
+      const url = createRadialMap(width, height, warpPower)
       if (url) setMapUrl(url)
     }
 
@@ -145,7 +163,7 @@ export function CrtDomWarp() {
     return () => {
       resizeObserver.disconnect()
     }
-  }, [pathname])
+  }, [pathname, warpPower])
 
   const active = warpScale > 0 && Boolean(mapUrl)
 
@@ -154,21 +172,14 @@ export function CrtDomWarp() {
     const target = targetRef.current
     if (!target) return
 
-    if (!active) {
-      target.style.filter = previousFilter.current.value
-      return
+    if (active) {
+      target.classList.add(styles.warpTarget)
+    } else {
+      target.classList.remove(styles.warpTarget)
     }
 
-    const base = previousFilter.current.value
-    const next = base.includes('url(#crt-warp)')
-      ? base
-      : base
-        ? `${base} url(#crt-warp)`
-        : 'url(#crt-warp)'
-    target.style.filter = next
-
     return () => {
-      target.style.filter = base
+      target.classList.remove(styles.warpTarget)
     }
   }, [active, pathname])
 

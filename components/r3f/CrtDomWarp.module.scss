@@ -4,3 +4,7 @@
   height: 0;
   pointer-events: none;
 }
+
+.warpTarget {
+  filter: url(#crt-warp);
+}

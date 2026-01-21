@@ -45,7 +45,8 @@ interface PostFXProps {
 }
 
 export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps) {
-  const reducedMotion = reducedMotionProp ?? useReducedMotion()
+  const reducedMotionPref = useReducedMotion()
+  const reducedMotion = reducedMotionProp ?? reducedMotionPref
   const { invalidate } = useThree()
   const config = FX_PRESETS[preset]
   const enablePostFx = config.enablePostFx
