@@ -3,6 +3,7 @@ import { Antonio, Space_Mono } from 'next/font/google'
 import { CrtDomOverlayLayer } from '../components/r3f/CrtDomOverlayLayer'
 import { CrtDomWarp } from '../components/r3f/CrtDomWarp'
 import { VisualStageClient } from '../components/r3f/VisualStageClient'
+import { Nav } from '@/components/shell/Nav'
 // import { SiteShell } from '@/components/shell/SiteShell'
 import '@/styles/globals.scss'
 
@@ -36,6 +37,7 @@ export default function RootLayout({
         <VisualStageClient />
         {/* <SiteShell>{children}</SiteShell> */}
         <CrtDomWarp />
+        <Nav />
         {children}
         <CrtDomOverlayLayer />
       </body>

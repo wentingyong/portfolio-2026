@@ -108,6 +108,66 @@ main {
   min-height: 100dvh;
 }
 
+.crt-frame {
+  position: relative;
+  isolation: isolate;
+  width: var(--frame-w, auto);
+  max-width: 100%;
+  --frame-stroke: clamp(1px, 0.2vw, 3px);
+  --stroke: var(--frame-stroke);
+  --frame-accent: var(--color-accent);
+  --accent: var(--frame-accent);
+  --frame-bg: var(--color-bg);
+  --bg: var(--frame-bg);
+  --frame-poly: polygon(
+    0% 0%,
+    76.7% 0%,
+    100% 24%,
+    100% 99.3%,
+    23.3% 99.3%,
+    0% 75.5%
+  );
+  --poly: var(--frame-poly);
+  --line-w: 60%;
+  --line-h: clamp(6px, 1vw, 12px);
+  --line-offset: 0.5dvw;
+
+  --line-poly: polygon(0 0, 0 100%, 100% 100%, 82% 0);
+  --line-color: var(--accent);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: var(--poly);
+    pointer-events: none;
+  }
+
+  &::before {
+    background: var(--accent);
+    z-index: 0;
+  }
+
+  &::after {
+    inset: var(--stroke);
+    background: var(--bg);
+    z-index: 1;
+  }
+}
+
+.crt-frame__line {
+  position: absolute;
+  top: var(--line-offset);
+  left: var(--line-offset);
+  width: var(--line-w);
+  height: var(--line-h);
+  background: var(--line-color);
+  clip-path: var(--line-poly);
+  z-index: 5;
+  pointer-events: none;
+}
+
 .u-visually-hidden {
   position: absolute;
   width: 1px;
@@ -122,6 +182,36 @@ main {
 
 .u-text-accent {
   color: $color-accent;
+}
+
+// Global reusable link bracket hover effect
+// Apply .u-linkBracketHover to any link/anchor to enable bracket hover
+// The link content should be wrapped in a span for proper bracket placement
+.u-linkBracketHover {
+  position: relative;
+  display: inline-block;
+  transition: color $motion-fast $motion-ease;
+
+  &::before {
+    content: '[';
+    opacity: 0;
+    transition: opacity $motion-fast $motion-ease;
+  }
+
+  &::after {
+    content: ']';
+    opacity: 0;
+    transition: opacity $motion-fast $motion-ease;
+  }
+
+  &:hover {
+    color: $color-accent;
+
+    &::before,
+    &::after {
+      opacity: 1;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
