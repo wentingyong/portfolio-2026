@@ -1,8 +1,8 @@
 .crtOverlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: var(--z-ui);
 }
 
 .crtOverlay__scanlines {
@@ -10,30 +10,109 @@
   inset: -8px 0 0 0;
   background-image: repeating-linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.04) 0px,
-    rgba(255, 255, 255, 0.04) 1px,
-    transparent 2px,
-    transparent 4px
+    rgba(255, 255, 255, 0.16) 0px,
+    rgba(255, 255, 255, 0.16) 3px,
+    transparent 3px,
+    transparent 6px
   );
-  background-image: repeating-linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--c-ink) 12%, transparent) 0px,
-    color-mix(in srgb, var(--c-ink) 12%, transparent) 1px,
-    transparent 2px,
-    transparent 4px
-  );
-  opacity: var(--crt-scanline-opacity, 0.08);
-  animation: crtScanlineDrift var(--crt-scanline-speed, 24s) linear infinite;
+
+  opacity: var(--crt-scanline-opacity, var(--crt-scanline-opacity-base, 0.45));
+  animation: crtScanlineDrift
+    var(--crt-scanline-speed, var(--crt-scanline-speed-base, 10s)) linear infinite;
   transform: translateY(0);
   will-change: transform;
+}
+
+.crtOverlay__scanlines {
+  background-position: 0 0;
+  background-size: 100% 6px;
+}
+
+.crtOverlay__vignette {
+  position: absolute;
+  inset: -2%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 42%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  opacity: var(--crt-vignette-opacity, var(--crt-vignette-opacity-base, 0.7));
+}
+
+.crtOverlay__curvature {
+  position: absolute;
+  inset: -2%;
+  border-radius: 3% / 2%;
+  opacity: var(--crt-curvature-opacity, var(--crt-curvature-opacity-base, 0.6));
+  transform: scale(1.03, 1.06);
+  pointer-events: none;
+}
+
+.crtOverlay__curvature::before,
+.crtOverlay__curvature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.crtOverlay__curvature::before {
+  background: radial-gradient(
+    ellipse at 50% 18%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.18) 38%,
+    transparent 68%
+  );
+  opacity: var(
+    --crt-curvature-highlight,
+    var(--crt-curvature-highlight-base, 0.85)
+  );
+  mix-blend-mode: screen;
+}
+
+.crtOverlay__curvature::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 46%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  opacity: var(
+    --crt-curvature-shadow,
+    var(--crt-curvature-shadow-base, 0.9)
+  );
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crtOverlay__vignette {
+    opacity: 0.35;
+  }
+
+  .crtOverlay__curvature {
+    opacity: 0.2;
+  }
+}
+
+@supports (background-image: color-mix(in srgb, #000 0%, transparent)) {
+  .crtOverlay__scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--c-ink) 30%, transparent) 0px,
+      color-mix(in srgb, var(--c-ink) 30%, transparent) 3px,
+      transparent 3px,
+      transparent 6px
+    );
+  }
 }
 
 @keyframes crtScanlineDrift {
   0% {
     transform: translateY(0);
+    background-position: 0 0;
   }
   100% {
-    transform: translateY(6px);
+    transform: translateY(36px);
+    background-position: 0 36px;
   }
 }
 
