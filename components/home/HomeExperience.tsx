@@ -26,6 +26,15 @@ export function HomeExperience() {
   const aboutRef = useRef<HTMLDivElement>(null)
   const projectsRef = useRef<HTMLDivElement>(null)
   const blogsRef = useRef<HTMLDivElement>(null)
+  const rebuildRafRef = useRef<number | null>(null)
+  const metricsRef = useRef({
+    panelWidth: 0,
+    panelHeight: 0,
+    aboutScroll: 0,
+    projectsScroll: 0,
+    blogsScroll: 0,
+    totalScroll: 0,
+  })
 
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
@@ -59,7 +68,10 @@ export function HomeExperience() {
 
       let timeline: gsap.core.Timeline | null = null
 
-      const buildTimeline = () => {
+      const hasMeaningfulDelta = (next: number, prev: number) =>
+        Math.abs(next - prev) > 1
+
+      const buildTimeline = (force = false) => {
         const panelWidth = heroPanel.offsetWidth || window.innerWidth
         const panelHeight = heroPanel.offsetHeight || window.innerHeight
         const aboutScroll = panelHeight * ABOUT_SCROLL_MULTIPLIER
@@ -72,6 +84,29 @@ export function HomeExperience() {
 
         const totalScroll =
           panelWidth * (panels.length - 1) + aboutScroll + projectsScroll + blogsScroll
+
+        const previous = metricsRef.current
+        const changed =
+          force ||
+          hasMeaningfulDelta(panelWidth, previous.panelWidth) ||
+          hasMeaningfulDelta(panelHeight, previous.panelHeight) ||
+          hasMeaningfulDelta(aboutScroll, previous.aboutScroll) ||
+          hasMeaningfulDelta(projectsScroll, previous.projectsScroll) ||
+          hasMeaningfulDelta(blogsScroll, previous.blogsScroll) ||
+          hasMeaningfulDelta(totalScroll, previous.totalScroll)
+
+        if (!changed && timeline) {
+          return false
+        }
+
+        metricsRef.current = {
+          panelWidth,
+          panelHeight,
+          aboutScroll,
+          projectsScroll,
+          blogsScroll,
+          totalScroll,
+        }
 
         if (timeline) {
           timeline.scrollTrigger?.kill()
@@ -153,20 +188,31 @@ export function HomeExperience() {
             duration: blogsScroll,
           })
         }
+
+        return true
       }
 
-      buildTimeline()
+      buildTimeline(true)
+
+      const scheduleRefresh = () => {
+        if (rebuildRafRef.current !== null) return
+        rebuildRafRef.current = requestAnimationFrame(() => {
+          rebuildRafRef.current = null
+          const rebuilt = buildTimeline()
+          if (rebuilt) {
+            ScrollTrigger.refresh()
+          }
+        })
+      }
 
       const handleResize = () => {
-        buildTimeline()
-        ScrollTrigger.refresh()
+        scheduleRefresh()
       }
 
       window.addEventListener('resize', handleResize)
 
       const resizeObserver = new ResizeObserver(() => {
-        buildTimeline()
-        ScrollTrigger.refresh()
+        scheduleRefresh()
       })
 
       if (projectsSection) {
@@ -180,6 +226,10 @@ export function HomeExperience() {
       return () => {
         window.removeEventListener('resize', handleResize)
         resizeObserver.disconnect()
+        if (rebuildRafRef.current !== null) {
+          cancelAnimationFrame(rebuildRafRef.current)
+          rebuildRafRef.current = null
+        }
         timeline?.scrollTrigger?.kill()
         timeline?.kill()
       }
@@ -196,7 +246,11 @@ export function HomeExperience() {
 
   return (
     <div className={rootClassName}>
-      <div className={styles.homeExperience__sequence} ref={sequenceRef}>
+      <div
+        className={styles.homeExperience__sequence}
+        ref={sequenceRef}
+        data-crt-warp
+      >
         <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
           <div className={styles.homeExperience__panel} ref={heroRef}>
             <Hero />
