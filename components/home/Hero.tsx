@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Nav } from '@/components/shell/Nav'
+
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime'
 import styles from './Hero.module.scss'
 
@@ -68,7 +68,7 @@ export function Hero() {
           Crafting immersive web experiences & digital interfaces
         </h2>
         </div>
-          <Nav />
+   
         <div className={styles.hero__bottom}>
           <div className={styles.hero__meta}>
             <small className={styles.hero__metaItem}>

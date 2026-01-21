@@ -1,33 +1,246 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+// Nav wrapper - fixed bottom-left
 .nav {
-  display: ob;
-  gap: $spacing-sm;
-  align-items: flex-start;
-  padding: $spacing-xs $spacing-sm;
-  border: $border-thin solid $color-border;
-  position: absolute;
+  position: fixed;
+  top: auto;
   bottom: $spacing-lg;
   left: $spacing-xl;
-  right:auto;
-  z-index: $z-layer-1;
+  right: auto;
+  z-index: $z-layer-3;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  width: auto;
 }
 
-.nav__label {
-  opacity: 0.7;
+// Main container with box frame
+.nav__container {
+  pointer-events: auto;
+  --frame-w: clamp(200px, 20vw, 325px);
+  --frame-stroke: clamp(2px, 0.45vw, 4px);
+  --frame-poly: polygon(
+    0% 0%,
+    76.7% 0%,
+    100% 24%,
+    100% 99.3%,
+    23.3% 99.3%,
+    0% 75.5%
+  );
+  --line-w: 60%;
+  --line-h: #{$fs-nav};
+  --line-offset-x: calc(#{$spacing-sm} + var(--stroke));
+  --line-offset-y: calc(#{$spacing-sm} + var(--stroke));
 }
 
+.nav__container--glow::before {
+  filter: drop-shadow(0 0 16.599px #F28705) drop-shadow(0 0 24.898px rgba(242, 135, 5, 0.30));
+}
+
+// SVG background frame (nav-box.svg)
+.nav__box {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: none;
+}
+
+.nav__line {
+  pointer-events: none;
+}
+
+
+
+
+// Content wrapper inside box
+.nav__content {
+  position: relative;
+  z-index: 2;
+  padding: calc(#{$spacing-md} + var(--stroke));
+  padding-top: calc(#{$spacing-md} + var(--stroke) + var(--line-h));
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+}
+
+// Nav items list
 .nav__list {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(#{$spacing-2xs} * 0.5);
+  max-width: 100%;
+}
+
+// Nav item
+.nav__item {
+  margin: 0;
+  padding: 0;
   display: grid;
-  gap: $spacing-2xs;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+  column-gap: $spacing-sm;
+  max-width: 100%;
+  min-width: 0;
 }
 
+
+
+
+
+// NAV: label
+.nav__label {
+  font-family: $font-mono;
+  font-size: $fs-nav;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: $color-fg;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+// Nav link
 .nav__link {
-  transition: color $motion-fast $motion-ease, opacity $motion-medium $motion-ease;
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: $spacing-2xs;
+  flex: 1 1 auto;
+  grid-column: 2;
+  --cursor-size: 1em;
+  font-family: $font-mono;
+  font-size: $fs-nav;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: $color-fg;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color $motion-fast $motion-ease;
+  background: transparent;
+  border: none;
+  padding: 0 0 0 calc(var(--cursor-size) + #{$spacing-2xs});
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+
+  // Hover state
+  &:hover {
+    color: $color-accent;
+
+    .nav__linkText {
+      color: $color-accent;
+
+      &::before,
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Focus state
+  &:focus-visible {
+    outline: $border-hairline solid $color-accent;
+    outline-offset: $spacing-2xs;
+  }
 }
 
-.nav__link:hover {
+// Link text with bracket hover
+.nav__linkText {
+  display: inline-block;
+  color: inherit;
+  transition: color $motion-fast $motion-ease;
+  min-width: 0;
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+
+  // Brackets via pseudo-elements
+  &::before,
+  &::after {
+    opacity: 0;
+    transition: opacity $motion-fast $motion-ease;
+  }
+
+  &::before {
+    content: '[';
+  }
+
+  &::after {
+    content: ']';
+  }
+}
+
+// Active link text - always show brackets
+.nav__linkText--active {
   color: $color-accent;
-  opacity: 0.85;
+
+  &::before,
+  &::after {
+    opacity: 1;
+  }
+}
+
+// Active state (when section is in viewport center)
+.nav__link--active {
+  color: $color-accent;
+  filter: drop-shadow(0 0 16.599px #F28705) drop-shadow(0 0 24.898px rgba(242, 135, 5, 0.30));
+}
+
+// Triangle cursor for active items
+.nav__cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--cursor-size);
+  line-height: 1;
+  color: $color-accent;
+  filter: drop-shadow(0 0 16.599px #F28705) drop-shadow(0 0 24.898px rgba(242, 135, 5, 0.30));
+  animation: cursorFlash 1s ease-in-out infinite;
+
+  @include reducedMotion {
+    animation: none;
+  }
+}
+
+@keyframes cursorFlash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .nav {
+    bottom: $spacing-md;
+    left: $spacing-md;
+  }
+
+  .nav__container {
+    --frame-w: clamp(150px, 45vw, 220px);
+  }
+
+  .nav__content {
+    padding: calc(#{$spacing-sm} + var(--stroke));
+    padding-top: calc(#{$spacing-sm} + var(--stroke) + var(--line-h));
+  }
+
+  .nav__lineSvg {
+    display: none;
+  }
 }
