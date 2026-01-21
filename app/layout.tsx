@@ -5,7 +5,6 @@ import { CrtDomOverlayLayer } from '../components/r3f/CrtDomOverlayLayer'
 import { CrtDomWarp } from '../components/r3f/CrtDomWarp'
 import { VisualStageClient } from '../components/r3f/VisualStageClient'
 import { Nav } from '@/components/shell/Nav'
-// import { SiteShell } from '@/components/shell/SiteShell'
 import '@/styles/globals.scss'
 
 const antonio = Antonio({
@@ -36,7 +35,6 @@ export default function RootLayout({
     <html lang="en" className={`${antonio.variable} ${spaceMono.variable}`}>
       <body>
         <VisualStageClient />
-        {/* <SiteShell>{children}</SiteShell> */}
         <Suspense fallback={null}>
           <CrtDomWarp />
         </Suspense>
