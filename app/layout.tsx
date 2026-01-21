@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Antonio, Space_Mono } from 'next/font/google'
 import { CrtDomOverlayLayer } from '../components/r3f/CrtDomOverlayLayer'
 import { CrtDomWarp } from '../components/r3f/CrtDomWarp'
@@ -36,10 +37,14 @@ export default function RootLayout({
       <body>
         <VisualStageClient />
         {/* <SiteShell>{children}</SiteShell> */}
-        <CrtDomWarp />
+        <Suspense fallback={null}>
+          <CrtDomWarp />
+        </Suspense>
         <Nav />
         {children}
-        <CrtDomOverlayLayer />
+        <Suspense fallback={null}>
+          <CrtDomOverlayLayer />
+        </Suspense>
       </body>
     </html>
   )
