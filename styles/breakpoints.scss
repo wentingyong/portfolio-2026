@@ -1,0 +1,22 @@
+@use 'sass:map';
+
+// Breakpoints are for layout shifts only. Prefer clamp/auto-fit first.
+$breakpoints: (
+  'sm': 480px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  'xxl': 1440px,
+) !default;
+
+@mixin up($size) {
+  @media (min-width: map.get($breakpoints, $size)) {
+    @content;
+  }
+}
+
+@mixin down($size) {
+  @media (max-width: map.get($breakpoints, $size)) {
+    @content;
+  }
+}

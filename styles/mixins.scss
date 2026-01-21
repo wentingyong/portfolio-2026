@@ -1,0 +1,31 @@
+@use 'sass:math';
+
+$vw-min: 375px !default;
+$vw-max: 1440px !default;
+
+@function fluid-clamp($min, $max, $min-vw: $vw-min, $max-vw: $vw-max) {
+  $slope: math.div($max - $min, $max-vw - $min-vw);
+  $intercept: $min - $slope * $min-vw;
+  $vw-scale: $slope * 100;
+
+  @return clamp(#{$min}, calc(#{$intercept} + #{$vw-scale}vw), #{$max});
+}
+
+@mixin fluid-clamp($property, $min, $max, $min-vw: $vw-min, $max-vw: $vw-max) {
+  #{$property}: fluid-clamp($min, $max, $min-vw, $max-vw);
+}
+
+@mixin focusRing(
+  $color: var(--color-accent),
+  $offset: var(--space-2xs),
+  $width: var(--border-hairline)
+) {
+  outline: #{$width} solid #{$color};
+  outline-offset: #{$offset};
+}
+
+@mixin reducedMotion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

@@ -1,0 +1,20 @@
+@use 'mixins' as *;
+
+@mixin typography-root {
+  --font-display-stack: 'Antonio', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-mono-stack: 'Space Mono', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
+    'Courier New', monospace;
+  --font-body: var(--font-mono, var(--font-mono-stack));
+
+  --fs-h1: clamp(96px, min(13.8889vw, 22svh), 356px);
+  --fs-h2: #{fluid-clamp(28px, 48px)};
+  --fs-h3: #{fluid-clamp(16px, 24px)};
+  --fs-body: #{fluid-clamp(14px, 16px)};
+  --fs-nav: #{fluid-clamp(14px, 20px)};
+  --fs-small: #{fluid-clamp(11px, 18px)};
+
+  --lh-tight: 0.9;
+  --lh-normal: 1.6;
+  --lh-loose: 1.75;
+  --measure: 68ch;
+}

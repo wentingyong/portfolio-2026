@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Hero } from './Hero'
@@ -33,7 +33,7 @@ export function HomeExperience() {
   // Disable horizontal/pin choreography on mobile or reduced motion
   const enableChoreography = !reducedMotion && !isMobile
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!sequenceRef.current || !horizontalTrackRef.current || !enableChoreography) return
 
     const ctx = gsap.context(() => {
@@ -190,22 +190,12 @@ export function HomeExperience() {
     }
   }, [enableChoreography])
 
-  // Vertical fallback layout (mobile or reduced motion)
-  if (!enableChoreography) {
-    return (
-      <div className={styles.homeExperience}>
-        <Hero />
-        <About />
-        <Projects />
-        <Blogs />
-        <CTA />
-      </div>
-    )
-  }
+  const rootClassName = enableChoreography
+    ? styles.homeExperience
+    : `${styles.homeExperience} ${styles['homeExperience--vertical']}`
 
-  // Desktop choreography layout
   return (
-    <div className={styles.homeExperience}>
+    <div className={rootClassName}>
       <div className={styles.homeExperience__sequence} ref={sequenceRef}>
         <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
           <div className={styles.homeExperience__panel} ref={heroRef}>
