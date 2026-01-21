@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel:preflight": "npm run lint && npm run build"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",
