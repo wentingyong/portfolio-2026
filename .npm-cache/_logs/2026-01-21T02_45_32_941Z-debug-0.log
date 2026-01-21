@@ -1,0 +1,19 @@
+0 verbose cli /Users/zoeyong/.nvm/versions/node/v22.19.0/bin/node /Users/zoeyong/.nvm/versions/node/v22.19.0/bin/npm
+1 info using npm@10.9.3
+2 info using node@v22.19.0
+3 silly config load:file:/Users/zoeyong/.nvm/versions/node/v22.19.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Volumes/Wenting_NVMe/Dev/Portfolio/portfolio-2026/.npmrc
+5 silly config load:file:/Users/zoeyong/.npmrc
+6 silly config load:file:/Users/zoeyong/.nvm/versions/node/v22.19.0/etc/npmrc
+7 verbose title npm view @react-three/postprocessing@2 peerDependencies
+8 verbose argv "view" "@react-three/postprocessing@2" "peerDependencies" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:/Volumes/Wenting_NVMe/Dev/Portfolio/portfolio-2026/.npm-cache/_logs/2026-01-21T02_45_32_941Z-
+10 verbose logfile /Volumes/Wenting_NVMe/Dev/Portfolio/portfolio-2026/.npm-cache/_logs/2026-01-21T02_45_32_941Z-debug-0.log
+11 silly logfile done cleaning log files
+12 http fetch GET 200 https://registry.npmjs.org/@react-three%2fpostprocessing 136ms (cache revalidated)
+13 verbose cwd /Volumes/Wenting_NVMe/Dev/Portfolio/portfolio-2026
+14 verbose os Darwin 25.1.0
+15 verbose node v22.19.0
+16 verbose npm  v10.9.3
+17 verbose exit 0
+18 info ok

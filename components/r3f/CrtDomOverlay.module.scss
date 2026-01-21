@@ -1,0 +1,44 @@
+.crtOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crtOverlay__scanlines {
+  position: absolute;
+  inset: -8px 0 0 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--c-ink) 12%, transparent) 0px,
+    color-mix(in srgb, var(--c-ink) 12%, transparent) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: var(--crt-scanline-opacity, 0.08);
+  animation: crtScanlineDrift var(--crt-scanline-speed, 24s) linear infinite;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+@keyframes crtScanlineDrift {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crtOverlay__scanlines {
+    animation: none;
+  }
+}
