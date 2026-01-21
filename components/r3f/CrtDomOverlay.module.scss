@@ -16,7 +16,7 @@
     transparent 6px
   );
 
-  opacity: var(--crt-scanline-opacity, var(--crt-scanline-opacity-base, 0.45));
+  opacity: var(--crt-scanline-opacity, var(--crt-scanline-opacity-base, 0.55));
   animation: crtScanlineDrift
     var(--crt-scanline-speed, var(--crt-scanline-speed-base, 10s)) linear infinite;
   transform: translateY(0);
@@ -25,7 +25,7 @@
 
 .crtOverlay__scanlines {
   background-position: 0 0;
-  background-size: 100% 6px;
+  background-size: 100% 7px;
 }
 
 .crtOverlay__vignette {

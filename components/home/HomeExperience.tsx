@@ -196,7 +196,11 @@ export function HomeExperience() {
 
   return (
     <div className={rootClassName}>
-      <div className={styles.homeExperience__sequence} ref={sequenceRef}>
+      <div
+        className={styles.homeExperience__sequence}
+        ref={sequenceRef}
+        data-crt-warp
+      >
         <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
           <div className={styles.homeExperience__panel} ref={heroRef}>
             <Hero />

@@ -16,7 +16,7 @@ export const FX_PRESETS: Record<
   low: {
     dpr: 1,
     enablePostFx: true, // Set false to disable postprocessing on low.
-    scanlines: { opacity: 0.24, speed: 14 },
+    scanlines: { opacity: 0.32, speed: 14 },
     chromatic: { enabled: false, base: 0, boost: 0, vertical: 0.6 },
     vignette: { enabled: true, offset: 0.4, darkness: 0.45 },
     curvature: { enabled: false, amount: 0 },
@@ -25,7 +25,7 @@ export const FX_PRESETS: Record<
   medium: {
     dpr: 1.25,
     enablePostFx: true,
-    scanlines: { opacity: 0.28, speed: 10 },
+    scanlines: { opacity: 0.4, speed: 10 },
     chromatic: { enabled: true, base: 0.0008, boost: 0.0035, vertical: 0.75 },
     vignette: { enabled: true, offset: 0.35, darkness: 0.55 },
     curvature: { enabled: true, amount: 0.035 },
@@ -34,7 +34,7 @@ export const FX_PRESETS: Record<
   high: {
     dpr: 1.5,
     enablePostFx: true,
-    scanlines: { opacity: 0.32, speed: 8 },
+    scanlines: { opacity: 0.45, speed: 8 },
     chromatic: { enabled: true, base: 0.001, boost: 0.0045, vertical: 0.8 },
     vignette: { enabled: true, offset: 0.32, darkness: 0.6 },
     curvature: { enabled: true, amount: 0.045 },

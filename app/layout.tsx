@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Antonio, Space_Mono } from 'next/font/google'
 import { CrtDomOverlayLayer } from '../components/r3f/CrtDomOverlayLayer'
+import { CrtDomWarp } from '../components/r3f/CrtDomWarp'
 import { VisualStageClient } from '../components/r3f/VisualStageClient'
 // import { SiteShell } from '@/components/shell/SiteShell'
 import '@/styles/globals.scss'
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body>
         <VisualStageClient />
         {/* <SiteShell>{children}</SiteShell> */}
+        <CrtDomWarp />
         {children}
         <CrtDomOverlayLayer />
       </body>
