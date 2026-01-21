@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styles from './Nav.module.scss'
 
 export function Nav() {
@@ -6,24 +7,24 @@ export function Nav() {
       <span className={styles.nav__label}>Nav:</span>
       <ul className={styles.nav__list}>
         <li>
-          <a className={styles.nav__link} href="/">
+          <Link className={styles.nav__link} href="/">
             [00 Home]
-          </a>
+          </Link>
         </li>
         <li>
-          <a className={styles.nav__link} href="/about">
+          <Link className={styles.nav__link} href="/about">
             01 About
-          </a>
+          </Link>
         </li>
         <li>
-          <a className={styles.nav__link} href="/projects">
+          <Link className={styles.nav__link} href="/projects">
             02 Projects
-          </a>
+          </Link>
         </li>
         <li>
-          <a className={styles.nav__link} href="/contact">
+          <Link className={styles.nav__link} href="/contact">
             03 Contact
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>

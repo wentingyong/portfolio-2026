@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Nav } from '@/components/shell/Nav'
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime'
 import styles from './Hero.module.scss'
@@ -25,24 +26,26 @@ export function Hero() {
               <span className={styles.hero__titleText}>Design</span>
             </h1>
             <div className={styles.hero__imageContainer}>
-              <img
+              <Image
                 className={styles.hero__image}
                 src="/hero-eyes.png"
                 alt=""
-                loading="eager"
-                decoding="async"
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
+                priority
               />
             </div>
           </div>
 
           <div className={styles.hero__row}>
             <div className={styles.hero__imageContainer}>
-              <img
+              <Image
                 className={styles.hero__image}
                 src="/hero-mouth.png"
                 alt=""
-                loading="eager"
-                decoding="async"
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
+                priority
               />
             </div>
             <h1 className={styles.hero__title}>
