@@ -72,34 +72,34 @@ export function Hero() {
         <div className={styles.hero__bottom}>
           <div className={styles.hero__meta}>
             <small className={styles.hero__metaItem}>
-              [Comm links:{' '}
+              Comm links:{' '}
               <a
-                className={styles.hero__metaLink}
+                className={`${styles.hero__metaLink} u-linkBracketHover`}
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
+                <span>GitHub</span>
               </a>{' '}
               |{' '}
               <a
-                className={styles.hero__metaLink}
+                className={`${styles.hero__metaLink} u-linkBracketHover`}
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                LinkedIn
+                <span>LinkedIn</span>
               </a>{' '}
               |{' '}
               <a
-                className={styles.hero__metaLink}
+                className={`${styles.hero__metaLink} u-linkBracketHover`}
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                X
+                <span>X</span>
               </a>
-              ]
+              
             </small>
           </div>
             <small className={styles.hero__bottomText}>Version: ©2026</small>

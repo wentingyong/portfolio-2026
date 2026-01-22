@@ -20,8 +20,7 @@
 // Main container with box frame
 .nav__container {
   pointer-events: auto;
-  --frame-w: clamp(200px, 20vw, 325px);
-  --frame-stroke: clamp(2px, 0.45vw, 4px);
+  --frame-w: clamp(250px, 20vw, 325px);
   --frame-poly: polygon(
     0% 0%,
     76.7% 0%,
