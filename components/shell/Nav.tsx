@@ -83,8 +83,10 @@ function calculateSectionScrollPositions() {
 }
 
 // Determine which section is active based on current scroll position
-function getActiveSectionFromScroll(scrollY: number): string {
-  const info = calculateSectionScrollPositions()
+function getActiveSectionFromScroll(
+  scrollY: number,
+  info = calculateSectionScrollPositions()
+): string {
   
   if (!info) {
     // Fallback: check CTA section visibility
@@ -129,11 +131,30 @@ function getActiveSectionFromScroll(scrollY: number): string {
   return 'cta'
 }
 
+function isInHorizontalTransition(
+  scrollY: number,
+  info: NonNullable<ReturnType<typeof calculateSectionScrollPositions>>
+): boolean {
+  const { triggerStart, positions, aboutScroll, projectsScroll } = info
+
+  const transitions: Array<[number, number]> = [
+    [triggerStart, positions.about],
+    [positions.about + aboutScroll, positions.projects],
+    [positions.projects + projectsScroll, positions.blogs],
+  ]
+
+  return transitions.some(([start, end]) => scrollY > start && scrollY < end)
+}
+
 export function Nav() {
   const [activeSection, setActiveSection] = useState<string>('hero')
   const reducedMotion = useReducedMotion()
   const scrollListenerRef = useRef<number | null>(null)
   const isScrollingRef = useRef(false)
+  const navContainerRef = useRef<HTMLDivElement>(null)
+  const navVisibilityRef = useRef<'shown' | 'hidden'>('shown')
+  const hasUserScrolledRef = useRef(false)
+  const lastScrollYRef = useRef<number | null>(null)
 
   // Scroll to section handler
   const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
@@ -205,14 +226,65 @@ export function Nav() {
       // Throttle with requestAnimationFrame
       scrollListenerRef.current = requestAnimationFrame(() => {
         const scrollY = window.scrollY
-        const newActiveSection = getActiveSectionFromScroll(scrollY)
-        
+        const info = calculateSectionScrollPositions()
+        const newActiveSection = getActiveSectionFromScroll(scrollY, info)
+
         setActiveSection(prev => {
           if (prev !== newActiveSection) {
             return newActiveSection
           }
           return prev
         })
+
+        const navEl = navContainerRef.current
+        if (!navEl) return
+
+        if (reducedMotion || !info) {
+          if (navVisibilityRef.current !== 'shown') {
+            navVisibilityRef.current = 'shown'
+            gsap.set(navEl, { autoAlpha: 1 })
+          }
+          return
+        }
+
+        if (lastScrollYRef.current === null) {
+          lastScrollYRef.current = scrollY
+        }
+
+        if (Math.abs(scrollY - lastScrollYRef.current) > 0) {
+          hasUserScrolledRef.current = true
+          lastScrollYRef.current = scrollY
+        }
+
+        if (!hasUserScrolledRef.current) {
+          if (navVisibilityRef.current !== 'shown') {
+            navVisibilityRef.current = 'shown'
+            gsap.set(navEl, { autoAlpha: 1 })
+          }
+          return
+        }
+
+        const heroRevealThreshold = info.triggerStart + Math.max(2, info.panelWidth * 0.002)
+        if (scrollY <= heroRevealThreshold) {
+          if (navVisibilityRef.current !== 'shown') {
+            navVisibilityRef.current = 'shown'
+            gsap.set(navEl, { autoAlpha: 1 })
+          }
+          return
+        }
+
+        const shouldHide = isInHorizontalTransition(scrollY, info)
+        const nextState: 'shown' | 'hidden' = shouldHide ? 'hidden' : 'shown'
+
+        if (navVisibilityRef.current !== nextState) {
+          navVisibilityRef.current = nextState
+          gsap.to(navEl, {
+            autoAlpha: shouldHide ? 0 : 1,
+            duration: 0.22,
+            ease: 'steps(4)',
+            overwrite: true,
+          })
+        }
       })
     }
 
@@ -227,11 +299,11 @@ export function Nav() {
         cancelAnimationFrame(scrollListenerRef.current)
       }
     }
-  }, [])
+  }, [reducedMotion])
 
   return (
     <nav className={styles.nav} aria-label="Primary">
-      <div className={`${styles.nav__container} crt-frame`}>
+      <div className={`${styles.nav__container} crt-frame`} ref={navContainerRef}>
 
         <div className={`${styles.nav__line} crt-frame__line`} aria-hidden="true" />
 
