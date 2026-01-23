@@ -12,6 +12,13 @@
   overflow: hidden;
 }
 
+.homeExperience__sequenceInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .homeExperience__horizontalTrack {
   position: relative;
   display: flex;
@@ -46,6 +53,11 @@
 }
 
 .homeExperience--vertical .homeExperience__sequence {
+  height: auto;
+  overflow: visible;
+}
+
+.homeExperience--vertical .homeExperience__sequenceInner {
   height: auto;
   overflow: visible;
 }

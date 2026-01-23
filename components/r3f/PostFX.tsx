@@ -1,9 +1,8 @@
 'use client'
 
 import { useEffect, useMemo, useRef } from 'react'
-import { EffectComposer, ChromaticAberration, Vignette } from '@react-three/postprocessing'
-import { BlendFunction, Effect } from 'postprocessing'
-import type { ChromaticAberrationEffect } from 'postprocessing'
+import { EffectComposer } from '@react-three/postprocessing'
+import { BlendFunction, ChromaticAberrationEffect, Effect, VignetteEffect } from 'postprocessing'
 import { Color, Uniform, Vector2 } from 'three'
 import { useThree } from './r3f'
 import { useCrtImpulse } from '@/lib/motion/useCrtImpulse'
@@ -58,24 +57,41 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
   const vignetteDarkness = config.vignette.darkness * (reducedMotion ? 0.7 : 1)
   const curvatureAmount = config.curvature.amount * (reducedMotion ? 0.45 : 1)
 
-  const chromaRef = useRef<any>(null)
   const chromaOffset = useRef(new Vector2(chromaBase, chromaBase * chromaVertical))
   const vignetteColor = useRef(new Color('#000000'))
   const modulationOffset = useMemo(() => 0.5, [])
   const impulseRef = useRef(0)
-  const intensityRef = useRef(1)
 
   const curvatureEffect = useMemo(() => new CrtCurvatureEffect(0), [])
+  const chromaEffect = useMemo(
+    () =>
+      new ChromaticAberrationEffect({
+        blendFunction: BlendFunction.NORMAL,
+        offset: chromaOffset.current.clone(),
+        radialModulation: true,
+        modulationOffset,
+      }),
+    [modulationOffset],
+  )
+  const vignetteEffect = useMemo(
+    () =>
+      new VignetteEffect({
+        eskil: false,
+        offset: config.vignette.offset,
+        darkness: vignetteDarkness,
+      }),
+    [config.vignette.offset, vignetteDarkness],
+  )
 
   const chromaticEnabled = enablePostFx && config.chromatic.enabled
   const vignetteEnabled = enablePostFx && config.vignette.enabled
   const curvatureEnabled = enablePostFx && config.curvature.enabled
 
   const applyChromatic = (impulse: number) => {
-    if (!chromaticEnabled || !chromaRef.current) return
-    const intensity = (chromaBase + impulse * chromaBoost) * intensityRef.current
+    if (!chromaticEnabled) return
+    const intensity = chromaBase + impulse * chromaBoost
     chromaOffset.current.set(intensity, intensity * chromaVertical)
-    chromaRef.current.effect.offset.copy(chromaOffset.current)
+    chromaEffect.offset.copy(chromaOffset.current)
     invalidate()
   }
 
@@ -103,14 +119,31 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
   }, [invalidate])
 
   useEffect(() => {
-    if (!chromaticEnabled || !chromaRef.current) return
-    applyChromatic(impulseRef.current)
-  }, [chromaBase, chromaVertical, chromaticEnabled, invalidate])
+    if (!chromaticEnabled) return
+    chromaOffset.current.set(chromaBase, chromaBase * chromaVertical)
+    chromaEffect.offset.copy(chromaOffset.current)
+    invalidate()
+  }, [chromaBase, chromaEffect, chromaVertical, chromaticEnabled, invalidate])
 
   useEffect(() => {
     curvatureEffect.setCurvature(curvatureEnabled ? curvatureAmount : 0)
     invalidate()
   }, [curvatureAmount, curvatureEffect, curvatureEnabled, invalidate])
+
+  useEffect(() => {
+    if (!vignetteEnabled) return
+    vignetteEffect.eskil = false
+    vignetteEffect.offset = config.vignette.offset
+    vignetteEffect.darkness = vignetteDarkness
+    invalidate()
+  }, [config.vignette.offset, invalidate, vignetteDarkness, vignetteEffect, vignetteEnabled])
+
+  useEffect(() => {
+    return () => {
+      chromaEffect.dispose?.()
+      vignetteEffect.dispose?.()
+    }
+  }, [chromaEffect, vignetteEffect])
 
   useEffect(() => {
     invalidate()
@@ -123,21 +156,8 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
   const effects = (
     <>
       {curvatureEnabled && <primitive object={curvatureEffect} />}
-      {chromaticEnabled && (
-        <ChromaticAberration
-          ref={chromaRef}
-          offset={chromaOffset.current}
-          radialModulation
-          modulationOffset={modulationOffset}
-        />
-      )}
-      {vignetteEnabled && (
-        <Vignette
-          eskil={false}
-          offset={config.vignette.offset}
-          darkness={vignetteDarkness}
-        />
-      )}
+      {chromaticEnabled && <primitive object={chromaEffect} />}
+      {vignetteEnabled && <primitive object={vignetteEffect} />}
     </>
   )
 

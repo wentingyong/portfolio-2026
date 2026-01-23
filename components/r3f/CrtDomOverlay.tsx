@@ -8,6 +8,7 @@ interface CrtDomOverlayProps {
   curvatureOpacity?: number
   curvatureHighlightOpacity?: number
   curvatureShadowOpacity?: number
+  scoped?: boolean
 }
 
 export function CrtDomOverlay({
@@ -17,6 +18,7 @@ export function CrtDomOverlay({
   curvatureOpacity,
   curvatureHighlightOpacity,
   curvatureShadowOpacity,
+  scoped = false,
 }: CrtDomOverlayProps) {
   const style: CSSProperties & Record<string, string> = {
     '--crt-scanline-opacity-base': `${opacity}`,
@@ -39,8 +41,12 @@ export function CrtDomOverlay({
     style['--crt-curvature-shadow-base'] = `${curvatureShadowOpacity}`
   }
 
+  const rootClassName = scoped
+    ? `${styles.crtOverlay} ${styles['crtOverlay--scoped']}`
+    : styles.crtOverlay
+
   return (
-    <div className={styles.crtOverlay} style={style} aria-hidden="true">
+    <div className={rootClassName} style={style} aria-hidden="true">
       <div className={styles.crtOverlay__scanlines} />
       <div className={styles.crtOverlay__vignette} />
       <div className={styles.crtOverlay__curvature} />

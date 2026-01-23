@@ -11,7 +11,7 @@
   background-color: $color-bg;
   color: $color-fg;
   font-size: $fs-body;
-  border: red 1px solid;
+
 }
 
 .hero__frame {
@@ -153,6 +153,15 @@
   object-position: center;
 }
 
+.hero__imageBase {
+  opacity: 1;
+}
+
+.hero__imageBase--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .hero__subtitle {
   margin: $spacing-md 0 0;
   align-self: flex-end;
@@ -239,4 +248,3 @@
 .hero__metaLink:hover {
   color: $color-accent;
 }
-

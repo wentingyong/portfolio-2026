@@ -5,6 +5,12 @@
   z-index: var(--z-ui);
 }
 
+.crtOverlay--scoped {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .crtOverlay__scanlines {
   position: absolute;
   inset: -8px 0 0 0;
