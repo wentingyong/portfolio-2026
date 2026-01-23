@@ -62,6 +62,8 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
   const chromaOffset = useRef(new Vector2(chromaBase, chromaBase * chromaVertical))
   const vignetteColor = useRef(new Color('#000000'))
   const modulationOffset = useMemo(() => 0.5, [])
+  const impulseRef = useRef(0)
+  const intensityRef = useRef(1)
 
   const curvatureEffect = useMemo(() => new CrtCurvatureEffect(0), [])
 
@@ -71,7 +73,7 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
 
   const applyChromatic = (impulse: number) => {
     if (!chromaticEnabled || !chromaRef.current) return
-    const intensity = chromaBase + impulse * chromaBoost
+    const intensity = (chromaBase + impulse * chromaBoost) * intensityRef.current
     chromaOffset.current.set(intensity, intensity * chromaVertical)
     chromaRef.current.effect.offset.copy(chromaOffset.current)
     invalidate()
@@ -84,7 +86,10 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
     scrollBoost: config.impulse.scroll,
     clickBoost: config.impulse.click,
     decayRate: config.impulse.decayRate,
-    onTick: applyChromatic,
+    onTick: (value) => {
+      impulseRef.current = value
+      applyChromatic(value)
+    },
   })
 
   useEffect(() => {
@@ -99,10 +104,7 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
 
   useEffect(() => {
     if (!chromaticEnabled || !chromaRef.current) return
-    chromaOffset.current.set(chromaBase, chromaBase * chromaVertical)
-
-    chromaRef.current.effect.offset.copy(chromaOffset.current)
-    invalidate()
+    applyChromatic(impulseRef.current)
   }, [chromaBase, chromaVertical, chromaticEnabled, invalidate])
 
   useEffect(() => {

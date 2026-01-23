@@ -1,3 +1,3 @@
 import './reactCompat'
 
-export { Canvas, useThree } from '@react-three/fiber'
+export { Canvas, useFrame, useThree } from '@react-three/fiber'
