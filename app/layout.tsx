@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   description: 'A physical digital space portfolio',
 }
 
+const ENABLE_GLOBAL_CRT = process.env.NEXT_PUBLIC_GLOBAL_CRT !== 'false'
+
 export default function RootLayout({
   children,
 }: {
@@ -34,15 +36,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${antonio.variable} ${spaceMono.variable}`}>
       <body>
-        <VisualStageClient />
-        <Suspense fallback={null}>
-          <CrtDomWarp />
-        </Suspense>
+        {ENABLE_GLOBAL_CRT ? <VisualStageClient /> : null}
+        {ENABLE_GLOBAL_CRT ? (
+          <Suspense fallback={null}>
+            <CrtDomWarp />
+          </Suspense>
+        ) : null}
         <Nav />
         {children}
-        <Suspense fallback={null}>
-          <CrtDomOverlayLayer />
-        </Suspense>
+        {ENABLE_GLOBAL_CRT ? (
+          <Suspense fallback={null}>
+            <CrtDomOverlayLayer />
+          </Suspense>
+        ) : null}
       </body>
     </html>
   )

@@ -5,6 +5,12 @@
   z-index: var(--z-ui);
 }
 
+.crtOverlay--scoped {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .crtOverlay__scanlines {
   position: absolute;
   inset: -8px 0 0 0;
@@ -16,7 +22,10 @@
     transparent 6px
   );
 
-  opacity: var(--crt-scanline-opacity, var(--crt-scanline-opacity-base, 0.55));
+  opacity: calc(
+    var(--crt-scanline-opacity, var(--crt-scanline-opacity-base, 0.55)) *
+      var(--crt-intensity, 1)
+  );
   animation: crtScanlineDrift
     var(--crt-scanline-speed, var(--crt-scanline-speed-base, 10s)) linear infinite;
   transform: translateY(0);
