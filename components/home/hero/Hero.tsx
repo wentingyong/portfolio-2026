@@ -1,14 +1,20 @@
 'use client'
 
-import { useLayoutEffect, useRef } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime'
+import { GlitchedImage } from '@/components/media/GlitchedImage/GlitchedImageClient'
 import styles from './Hero.module.scss'
 
 export function Hero() {
   const { timeString, timezone } = useCurrentTime()
   const heroRef = useRef<HTMLElement | null>(null)
+  const [mouthReady, setMouthReady] = useState(false)
+  const [eyesReady, setEyesReady] = useState(false)
+
+  const handleMouthReady = useCallback(() => setMouthReady(true), [])
+  const handleEyesReady = useCallback(() => setEyesReady(true), [])
 
   useLayoutEffect(() => {
     const heroEl = heroRef.current
@@ -69,12 +75,26 @@ export function Hero() {
                 </h1>
                 <div className={styles.hero__imageContainer} data-hero-eyes-origin>
                   <Image
-                    className={styles.hero__image}
+                    className={`${styles.hero__image} ${styles.hero__imageBase} ${
+                      eyesReady ? styles['hero__imageBase--hidden'] : ''
+                    }`}
                     src="/hero-eyes.png"
                     alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, 60vw"
                     priority
+                  />
+                  <GlitchedImage
+                    src="/hero-eyes.png"
+                    trigger="hover"
+                    clickImpulse
+                    preset="medium"
+                    baseline={0.6}
+                    maxBoost={0.95}
+                    hoverBoost={2}
+                    swapBaselineBoost
+                    fill
+                    onReady={handleEyesReady}
                   />
                 </div>
               </div>
@@ -82,16 +102,30 @@ export function Hero() {
               <div className={styles.hero__row} data-hero-row>
                 <div
                   className={styles.hero__imageContainer}
-                  data-hero-mouth-origin
                   data-hero-row-strip
+                  data-hero-fade
                 >
                   <Image
-                    className={styles.hero__image}
+                    className={`${styles.hero__image} ${styles.hero__imageBase} ${
+                      mouthReady ? styles['hero__imageBase--hidden'] : ''
+                    }`}
                     src="/hero-mouth.png"
                     alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, 60vw"
                     priority
+                  />
+                  <GlitchedImage
+                    src="/hero-mouth.png"
+                    trigger="hover"
+                    clickImpulse
+                    preset="medium"
+                    baseline={0.6}
+                    maxBoost={0.95}
+                    hoverBoost={2}
+                    swapBaselineBoost
+                    fill
+                    onReady={handleMouthReady}
                   />
                 </div>
                 <h1 className={styles.hero__title} data-hero-fade data-hero-row-text>
@@ -166,6 +200,17 @@ export function Hero() {
               sizes="(max-width: 768px) 90vw, 960px"
               priority
             />
+              <GlitchedImage
+                src="/hero-eyes.png"
+                trigger="hover"
+                clickImpulse
+                preset="medium"
+                baseline={0.6}
+                maxBoost={0.95}
+                hoverBoost={1.4}
+                swapBaselineBoost
+                fill
+              />
           </div>
         </div>
       </div>

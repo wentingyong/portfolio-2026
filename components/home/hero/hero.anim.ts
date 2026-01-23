@@ -27,9 +27,9 @@ export const buildHeroToAboutTransitionTimeline = ({
   const heroEyesOrigin = heroPanel.querySelector('[data-hero-eyes-origin]') as
     | HTMLElement
     | null
-  const heroMouthOrigin = heroPanel.querySelector('[data-hero-mouth-origin]') as
-    | HTMLElement
-    | null
+  const heroEyesGlitch = heroEyesOrigin?.querySelector(
+    '[data-glitched-image]',
+  ) as HTMLElement | null
   const heroRest = heroPanel.querySelector('[data-hero-rest]') as HTMLElement | null
   const portalLineDom = sequence.querySelector('[data-portal-line]') as HTMLElement | null
   const heroFadeTargets = Array.from(
@@ -118,14 +118,18 @@ export const buildHeroToAboutTransitionTimeline = ({
     clipPath: 'inset(0% 0% 0% 0%)',
     transformOrigin: 'center',
   })
-  gsap.set(heroEyes, { x: 0, y: 0 })
+  gsap.set(heroEyes, { x: 0, y: 0, willChange: 'transform', force3D: true })
   gsap.set(heroRest, { autoAlpha: 1, pointerEvents: 'auto' })
   gsap.set(heroFadeTargets, { opacity: 1 })
   if (heroEyesOrigin) {
-    gsap.set(heroEyesOrigin, { autoAlpha: 1 })
+    gsap.set(heroEyesOrigin, {
+      autoAlpha: 1,
+      willChange: 'transform',
+      force3D: true,
+    })
   }
-  if (heroMouthOrigin) {
-    gsap.set(heroMouthOrigin, { opacity: 1 })
+  if (heroEyesGlitch) {
+    gsap.set(heroEyesGlitch, { willChange: 'transform', force3D: true })
   }
   if (portalLineDom) {
     gsap.set(portalLineDom, { autoAlpha: 0, scaleX: 0.2 })
@@ -195,6 +199,9 @@ export const buildHeroToAboutTransitionTimeline = ({
     gsap.set(heroEyesOrigin, { x: 0, y: 0 })
   } else {
     gsap.set(heroEyes, { x: eyesOffsetX, y: eyesOffsetY })
+    if (heroEyesGlitch) {
+      gsap.set(heroEyesGlitch, { x: 0, y: 0 })
+    }
   }
 
   // Phase A: dim everything except eyes.
@@ -207,18 +214,6 @@ export const buildHeroToAboutTransitionTimeline = ({
     },
     0,
   )
-  if (heroMouthOrigin) {
-    transitionTl.to(
-      heroMouthOrigin,
-      {
-        opacity: 0.2,
-        duration: clearDuration,
-        ease: 'power1.out',
-      },
-      0,
-    )
-  }
-
   // Phase B: move eyes into compose position (screen center).
   if (moveEyesViaOrigin && heroEyesOrigin) {
     transitionTl.to(
@@ -227,7 +222,8 @@ export const buildHeroToAboutTransitionTimeline = ({
         x: -eyesOffsetX,
         y: -eyesOffsetY,
         duration: moveDuration,
-        ease: 'power2.out',
+        ease: 'none',
+        force3D: true,
       },
       moveStart,
     )
@@ -246,9 +242,22 @@ export const buildHeroToAboutTransitionTimeline = ({
   if (!moveEyesViaOrigin) {
     transitionTl.to(
       heroEyes,
-      { x: 0, y: 0, duration: moveDuration, ease: 'power2.out' },
+      { x: 0, y: 0, duration: moveDuration, ease: 'none', force3D: true },
       moveStart,
     )
+    if (heroEyesGlitch) {
+      transitionTl.to(
+        heroEyesGlitch,
+        {
+          x: -eyesOffsetX,
+          y: -eyesOffsetY,
+          duration: moveDuration,
+          ease: 'none',
+          force3D: true,
+        },
+        moveStart,
+      )
+    }
   }
   // #region agent log
   transitionTl.add(() => {fetch('http://127.0.0.1:7243/ingest/cb40a583-a5f3-45b5-a756-fe8737ba0159',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId:'debug-session',runId:'debug-1',hypothesisId:'H2',location:'hero.anim.ts:239',message:'move end state',data:{eyes:heroEyes?{x:gsap.getProperty(heroEyes,'x'),y:gsap.getProperty(heroEyes,'y'),opacity:getComputedStyle(heroEyes).opacity,transform:getComputedStyle(heroEyes).transform}:null,compose:heroComposeLayer?{opacity:getComputedStyle(heroComposeLayer).opacity}:null},timestamp:Date.now()})}).catch(()=>{});}, moveStart + moveDuration)
@@ -258,13 +267,6 @@ export const buildHeroToAboutTransitionTimeline = ({
     { opacity: 0, duration: moveDuration * 0.8, ease: 'power1.out' },
     moveStart,
   )
-  if (heroMouthOrigin) {
-    transitionTl.to(
-      heroMouthOrigin,
-      { opacity: 0, duration: moveDuration * 0.8, ease: 'power1.out' },
-      moveStart,
-    )
-  }
   transitionTl.set(
     heroRest,
     {
