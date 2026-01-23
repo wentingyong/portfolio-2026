@@ -3,13 +3,14 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Hero } from './Hero'
+import { Hero } from './hero/Hero'
 import { About } from './About'
 import { Projects } from './Projects'
 import { Blogs } from './Blogs'
 import { CTA } from './CTA'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { useIsMobile } from '@/lib/hooks/useIsMobile'
+import { buildHeroToAboutTransitionTimeline } from './hero/hero.anim'
 import styles from './HomeExperience.module.scss'
 
 if (typeof window !== 'undefined') {
@@ -27,6 +28,7 @@ export function HomeExperience() {
   const projectsRef = useRef<HTMLDivElement>(null)
   const blogsRef = useRef<HTMLDivElement>(null)
   const rebuildRafRef = useRef<number | null>(null)
+  const wiredLogRef = useRef(false)
   const metricsRef = useRef({
     panelWidth: 0,
     panelHeight: 0,
@@ -39,11 +41,13 @@ export function HomeExperience() {
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
 
-  // Disable horizontal/pin choreography on mobile or reduced motion
-  const enableChoreography = !reducedMotion && !isMobile
+  // Disable horizontal/pin choreography on mobile only.
+  const enableChoreography = !isMobile
 
   useLayoutEffect(() => {
-    if (!sequenceRef.current || !horizontalTrackRef.current || !enableChoreography) return
+    const hasSequence = Boolean(sequenceRef.current)
+    const hasTrack = Boolean(horizontalTrackRef.current)
+    if (!hasSequence || !hasTrack || !enableChoreography) return
 
     const ctx = gsap.context(() => {
       const sequence = sequenceRef.current!
@@ -149,11 +153,19 @@ export function HomeExperience() {
             invalidateOnRefresh: true,
           },
         })
-
-        timeline.to(horizontalTrack, {
-          x: -panelWidth,
-          duration: panelWidth,
+        buildHeroToAboutTransitionTimeline({
+          masterTl: timeline,
+          heroPanel,
+          sequence,
+          horizontalTrack,
+          panelWidth,
+          reducedMotion,
         })
+
+        if (!wiredLogRef.current && timeline.scrollTrigger) {
+          console.log('[HeroAboutTransition] wired into active master timeline')
+          wiredLogRef.current = true
+        }
 
         if (aboutContent) {
           timeline.to(aboutContent, {
@@ -238,7 +250,7 @@ export function HomeExperience() {
     return () => {
       ctx.revert()
     }
-  }, [enableChoreography])
+  }, [enableChoreography, reducedMotion])
 
   const rootClassName = enableChoreography
     ? styles.homeExperience
@@ -264,6 +276,9 @@ export function HomeExperience() {
           <div className={styles.homeExperience__panel} ref={blogsRef}>
             <Blogs />
           </div>
+        </div>
+        <div className={styles.homeExperience__portalOverlay} data-portal-overlay aria-hidden="true">
+          <div className={styles.homeExperience__portalLine} data-portal-line />
         </div>
       </div>
       <CTA />
