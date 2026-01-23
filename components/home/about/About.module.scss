@@ -2,16 +2,26 @@
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  border: 6px solid #0066ff; // Blue border for testing
+  overflow: hidden;
   box-sizing: border-box;
 }
 
+.about__tunnel {
+  position: absolute;
+  inset: 0;
+}
+
 .about__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  border: red solid 2px;
 }
 
 .about__title {
