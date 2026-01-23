@@ -72,6 +72,14 @@
   justify-content: center;
 }
 
+.hero__stripWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  transform-origin: center;
+  will-change: transform, clip-path;
+}
+
 .hero__row {
   display: flex;
   align-items: center;
@@ -132,6 +140,11 @@
   overflow: hidden;
 }
 
+.hero__imageContainer[data-hero-row-strip] {
+  flex: 0 0 auto;
+  width: var(--hero-row-text-width, auto);
+}
+
 .hero__image {
   width: 100%;
   height: 100%;
@@ -159,6 +172,46 @@
   text-overflow: ellipsis;
   color: $color-accent;
   // border: purple 1px solid;
+}
+
+.hero__composeLayer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: $z-layer-2;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hero__composeStack {
+  --hero-strip-max: 960px;
+  --hero-strip-gutter: var(--gutter);
+  --hero-collapse-band: clamp(60px, 8vh, 80px);
+  --hero-collapse-line: clamp(2px, 0.6vh, 6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+  width: 100%;
+  will-change: transform, clip-path;
+}
+
+.hero__strip {
+  position: relative;
+  overflow: hidden;
+  width: min(var(--hero-strip-max), calc(100% - var(--hero-strip-gutter) * 2));
+  height: 1em;
+  font-size: $fs-h1;
+}
+
+.hero__stripImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .hero__bottom {

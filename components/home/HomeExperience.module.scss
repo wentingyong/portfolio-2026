@@ -26,6 +26,26 @@
   will-change: transform;
 }
 
+.homeExperience__portalOverlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: var(--z-chaos);
+}
+
+.homeExperience__portalLine {
+  width: min(62%, 620px);
+  height: clamp(2px, 0.35vw, 6px);
+  background: $color-accent;
+  box-shadow: 0 0 18px rgba(255, 153, 0, 0.6);
+  opacity: 0;
+  transform: scaleX(0.2);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
 .homeExperience__panel {
   flex: 0 0 100vw;
   height: 100%;

@@ -1,5 +1,7 @@
 'use client'
 
+import '@/components/r3f/reactCompat'
+
 import {
   forwardRef,
   Suspense,
@@ -18,7 +20,7 @@ import { useImpulseDecay } from '../../../lib/motion/useImpulseDecay'
 import {
   VhsGlitchEffect,
   type VhsGlitchEffectHandle,
-} from '../../r3f/effects/VhsGlitchEffect'
+} from '../../r3f/VhsGlitchEffect'
 import styles from './GlitchedImage.module.scss'
 
 type GlitchPreset = 'low' | 'medium' | 'high'
@@ -386,6 +388,7 @@ export const GlitchedImage = forwardRef<GlitchedImageHandle, GlitchedImageProps>
     return (
       <div
         className={rootClassName}
+        data-glitched-image
         onPointerEnter={handlePointerEnter}
         onPointerDown={handlePointerDown}
       >

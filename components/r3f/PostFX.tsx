@@ -60,6 +60,7 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
   const chromaOffset = useRef(new Vector2(chromaBase, chromaBase * chromaVertical))
   const vignetteColor = useRef(new Color('#000000'))
   const modulationOffset = useMemo(() => 0.5, [])
+  const impulseRef = useRef(0)
 
   const curvatureEffect = useMemo(() => new CrtCurvatureEffect(0), [])
   const chromaEffect = useMemo(
@@ -101,7 +102,10 @@ export function PostFX({ preset, reducedMotion: reducedMotionProp }: PostFXProps
     scrollBoost: config.impulse.scroll,
     clickBoost: config.impulse.click,
     decayRate: config.impulse.decayRate,
-    onTick: applyChromatic,
+    onTick: (value) => {
+      impulseRef.current = value
+      applyChromatic(value)
+    },
   })
 
   useEffect(() => {
