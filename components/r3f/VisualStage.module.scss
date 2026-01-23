@@ -8,6 +8,11 @@
   overflow: hidden;
 }
 
+.visualStage--scoped {
+  position: absolute;
+  inset: 0;
+}
+
 .visualStage__canvas {
   position: absolute;
   inset: 0;

@@ -6,12 +6,15 @@ import { Color } from 'three'
 import { useSearchParams } from 'next/navigation'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { PostFX } from './PostFX'
-import { CrtNoisePlane } from './CrtNoisePlane'
 import { FX_PRESETS } from './fxConfig'
 import { DEFAULT_PRESET, normalizePreset } from './fxPreset'
 import styles from './VisualStage.module.scss'
 
-export function VisualStage() {
+interface VisualStageProps {
+  scoped?: boolean
+}
+
+export function VisualStage({ scoped = false }: VisualStageProps) {
   const reducedMotion = useReducedMotion()
   const searchParams = useSearchParams()
   const fxParam = searchParams?.get('fx') ?? null
@@ -24,8 +27,12 @@ export function VisualStage() {
   const presetConfig = FX_PRESETS[preset]
   const dpr = reducedMotion ? 1 : presetConfig.dpr
 
+  const rootClassName = scoped
+    ? `${styles.visualStage} ${styles['visualStage--scoped']}`
+    : styles.visualStage
+
   return (
-    <div className={styles.visualStage} aria-hidden="true">
+    <div className={rootClassName} aria-hidden="true">
       <Canvas
         className={styles.visualStage__canvas}
         frameloop="demand"
@@ -35,12 +42,15 @@ export function VisualStage() {
         gl={{ antialias: preset === 'high', alpha: true, powerPreference: 'high-performance' }}
         onCreated={({ scene }) => {
           if (typeof window === 'undefined') return
+          if (scoped) {
+            scene.background = null
+            return
+          }
           const styles = getComputedStyle(document.documentElement)
           const bg = styles.getPropertyValue('--c-bg').trim()
           scene.background = new Color(bg || '#000000')
         }}
       >
-        <CrtNoisePlane opacity={preset === 'low' ? 0.03 : 0.06} />
         <PostFX preset={preset} reducedMotion={reducedMotion} />
       </Canvas>
     </div>

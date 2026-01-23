@@ -1,12 +1,19 @@
 'use client'
 
+import { useCallback, useState } from 'react'
 import Image from 'next/image'
 
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime'
+import { GlitchedImage } from '@/src/components/media/GlitchedImage/GlitchedImageClient'
 import styles from './Hero.module.scss'
 
 export function Hero() {
   const { timeString, timezone } = useCurrentTime()
+  const [mouthReady, setMouthReady] = useState(false)
+  const [eyesReady, setEyesReady] = useState(false)
+
+  const handleMouthReady = useCallback(() => setMouthReady(true), [])
+  const handleEyesReady = useCallback(() => setEyesReady(true), [])
 
   return (
     <section className={styles.hero} data-section="hero">
@@ -27,12 +34,26 @@ export function Hero() {
             </h1>
             <div className={styles.hero__imageContainer}>
               <Image
-                className={styles.hero__image}
+                className={`${styles.hero__image} ${styles.hero__imageBase} ${
+                  eyesReady ? styles['hero__imageBase--hidden'] : ''
+                }`}
                 src="/hero-eyes.png"
                 alt=""
                 fill
                 sizes="(max-width: 768px) 100vw, 60vw"
                 priority
+              />
+              <GlitchedImage
+                src="/hero-eyes.png"
+                trigger="hover"
+                clickImpulse
+                preset="medium"
+                baseline={0.6}
+                maxBoost={0.95}
+                hoverBoost={1.4}
+                swapBaselineBoost
+                fill
+                onReady={handleEyesReady}
               />
             </div>
           </div>
@@ -40,12 +61,26 @@ export function Hero() {
           <div className={styles.hero__row}>
             <div className={styles.hero__imageContainer}>
               <Image
-                className={styles.hero__image}
+                className={`${styles.hero__image} ${styles.hero__imageBase} ${
+                  mouthReady ? styles['hero__imageBase--hidden'] : ''
+                }`}
                 src="/hero-mouth.png"
                 alt=""
                 fill
                 sizes="(max-width: 768px) 100vw, 60vw"
                 priority
+              />
+              <GlitchedImage
+                src="/hero-mouth.png"
+                trigger="hover"
+                clickImpulse
+                preset="medium"
+                baseline={0.6}
+                maxBoost={0.95}
+                hoverBoost={1.4}
+                swapBaselineBoost
+                fill
+                onReady={handleMouthReady}
               />
             </div>
             <h1 className={styles.hero__title}>

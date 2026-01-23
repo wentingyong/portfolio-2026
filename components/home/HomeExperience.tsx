@@ -249,20 +249,22 @@ export function HomeExperience() {
       <div
         className={styles.homeExperience__sequence}
         ref={sequenceRef}
-        data-crt-warp
+        data-crt-scope
       >
-        <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
-          <div className={styles.homeExperience__panel} ref={heroRef}>
-            <Hero />
-          </div>
-          <div className={styles.homeExperience__panel} ref={aboutRef}>
-            <About />
-          </div>
-          <div className={styles.homeExperience__panel} ref={projectsRef}>
-            <Projects />
-          </div>
-          <div className={styles.homeExperience__panel} ref={blogsRef}>
-            <Blogs />
+        <div className={styles.homeExperience__sequenceInner} data-crt-warp>
+          <div className={styles.homeExperience__horizontalTrack} ref={horizontalTrackRef}>
+            <div className={styles.homeExperience__panel} ref={heroRef}>
+              <Hero />
+            </div>
+            <div className={styles.homeExperience__panel} ref={aboutRef}>
+              <About />
+            </div>
+            <div className={styles.homeExperience__panel} ref={projectsRef}>
+              <Projects />
+            </div>
+            <div className={styles.homeExperience__panel} ref={blogsRef}>
+              <Blogs />
+            </div>
           </div>
         </div>
       </div>
