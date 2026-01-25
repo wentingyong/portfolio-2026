@@ -25,8 +25,11 @@
   place-items: center;
   pointer-events: none;
   opacity: 0;
-  clip-path: polygon(48% 48%, 52% 48%, 52% 52%, 48% 52%);
-  -webkit-clip-path: polygon(48% 48%, 52% 48%, 52% 52%, 48% 52%);
+  clip-path: polygon(49% 49%, 51% 49%, 51% 51%, 49% 51%);
+  -webkit-clip-path: polygon(49% 49%, 51% 49%, 51% 51%, 49% 51%);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: paint;
 }
 
 .about-tunnel__layer--structure {
@@ -35,6 +38,8 @@
 
 .about-tunnel__layer--grid {
   z-index: 2;
+  clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+  -webkit-clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
 }
 
 .about-tunnel__img {
@@ -46,22 +51,25 @@
   object-position: center;
   display: block;
   user-select: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .about-tunnel__screenWrap {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.92);
   transform-origin: center;
-  z-index: 2;
+  z-index: 3;
+  opacity: 0;
   will-change: transform, opacity;
 }
 
 .about-tunnel__screen {
-  width: min(39.8vw, 573.25px);
-  aspect-ratio: 573.25 / 306.45;
-  background: #000;
+  width: min(50vw, 800px);
+  aspect-ratio: 16 / 9;
+  background: var(--c-bg);
   border-radius: 18px;
 }
 
@@ -70,6 +78,21 @@
   font-family: var(--font-mono, ui-monospace);
   margin: 0;
   padding: 20px;
+}
+
+.about-tunnel[data-motion='off'] .about-tunnel__screenWrap {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.about-tunnel[data-motion='off'] .about-tunnel__layer {
+  opacity: 1;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.about-tunnel[data-motion='off'] .about-tunnel__layer--grid {
+  filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -82,5 +105,9 @@
     opacity: 1;
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+
+  .about-tunnel__layer--grid {
+    filter: none;
   }
 }

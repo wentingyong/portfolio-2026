@@ -11,6 +11,7 @@ import { CTA } from './CTA'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { useIsMobile } from '@/lib/hooks/useIsMobile'
 import { buildHeroToAboutTransitionTimeline } from './hero/hero.anim'
+import { buildAboutSectionTimeline } from './about/about.anim'
 import styles from './HomeExperience.module.scss'
 
 if (typeof window !== 'undefined') {
@@ -167,14 +168,27 @@ export function HomeExperience() {
           wiredLogRef.current = true
         }
 
+      const aboutStart = timeline.labels.about_boot ?? timeline.duration()
+        buildAboutSectionTimeline({
+          masterTl: timeline,
+          aboutPanel: aboutPanel,
+          aboutScroll,
+          reducedMotion,
+          startAt: aboutStart,
+        })
+
         if (aboutContent) {
-          timeline.to(aboutContent, {
-            opacity: 1,
-            y: 0,
-            duration: aboutScroll,
-          })
+          timeline.to(
+            aboutContent,
+            {
+              opacity: 1,
+              y: 0,
+              duration: aboutScroll,
+            },
+            aboutStart,
+          )
         } else {
-          timeline.to({}, { duration: aboutScroll })
+          timeline.to({}, { duration: aboutScroll }, aboutStart)
         }
 
         timeline.to(horizontalTrack, {
@@ -269,7 +283,7 @@ export function HomeExperience() {
               <Hero />
             </div>
             <div className={styles.homeExperience__panel} ref={aboutRef}>
-              <About />
+              <About motionEnabled={enableChoreography} />
             </div>
             <div className={styles.homeExperience__panel} ref={projectsRef}>
               <Projects />
