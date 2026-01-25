@@ -36,19 +36,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${antonio.variable} ${spaceMono.variable}`}>
       <body>
-        {ENABLE_GLOBAL_CRT ? <VisualStageClient /> : null}
+        {/* {ENABLE_GLOBAL_CRT ? <VisualStageClient /> : null}
         {ENABLE_GLOBAL_CRT ? (
           <Suspense fallback={null}>
             <CrtDomWarp />
           </Suspense>
-        ) : null}
+        ) : null} */}
         <Nav />
         {children}
-        {ENABLE_GLOBAL_CRT ? (
+        {/* {ENABLE_GLOBAL_CRT ? (
           <Suspense fallback={null}>
             <CrtDomOverlayLayer />
           </Suspense>
-        ) : null}
+        ) : null} */}
       </body>
     </html>
   )
