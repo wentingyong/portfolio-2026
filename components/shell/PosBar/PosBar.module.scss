@@ -1,0 +1,125 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.pos {
+  position: fixed;
+  right: $spacing-2xl;
+  bottom: $spacing-xl;
+  z-index: $z-layer-3;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2xs;
+  font-family: $font-mono;
+  font-size: $fs-nav;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-fg;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.pos__label {
+  color: $color-accent;
+  filter: $bloom-accent;
+}
+
+.pos__location {
+  color: $color-accent;
+  filter: $bloom-accent;
+}
+
+.pos__divider {
+  color: $color-fg;
+}
+
+.pos__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pos__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pos__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0 0 0 #{$spacing-2xs};
+  background: transparent;
+  border: 0;
+  font-family: $font-mono;
+  font-size: $fs-nav;
+
+  text-transform: uppercase;
+  color: $color-fg;
+  cursor: pointer;
+}
+
+.pos__link--active {
+  color: $color-accent;
+
+  .pos__linkText::before,
+  .pos__linkText::after {
+    opacity: 1;
+  }
+}
+
+.pos__link:hover .pos__linkText {
+  color: $color-accent;
+}
+
+.pos__link:hover .pos__linkText::before,
+.pos__link:hover .pos__linkText::after {
+  opacity: 1;
+}
+
+.pos__link:focus-visible .pos__linkText {
+  color: $color-accent;
+}
+
+.pos__link:focus-visible .pos__linkText::before,
+.pos__link:focus-visible .pos__linkText::after {
+  opacity: 1;
+}
+
+.pos__linkText {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 $spacing-2xs;
+  border-radius: 2px;
+}
+
+.pos__linkText.u-linkBracketHover {
+  display: inline-flex;
+}
+
+.pos__cursor {
+  position: relative;
+  padding: 0 0 0 #{$spacing-2xs};
+  margin:0;
+
+}
+
+.pos__separator {
+  color: $color-fg;
+}
+
+@media (max-width: 768px) {
+  .pos {
+    right: $spacing-md;
+    bottom: $spacing-md;
+    font-size: calc(#{$fs-nav} * 0.7);
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+
+  .pos__list {
+    flex-wrap: wrap;
+  }
+}
