@@ -27,10 +27,8 @@ export function Hero() {
 
       rows.forEach((row) => {
         const text = row.querySelector('[data-hero-row-text]') as HTMLElement | null
-        const strip = row.querySelector('[data-hero-row-strip]') as HTMLElement | null
-        if (!text || !strip) return
+        if (!text) return
         const width = Math.ceil(text.getBoundingClientRect().width)
-        strip.style.setProperty('--hero-row-text-width', `${width}px`)
       })
     }
 
@@ -102,7 +100,7 @@ export function Hero() {
               <div className={styles.hero__row} data-hero-row>
                 <div
                   className={styles.hero__imageContainer}
-                  data-hero-row-strip
+                  
                   data-hero-fade
                 >
                   <Image
@@ -132,8 +130,6 @@ export function Hero() {
                   <span className={styles.hero__titleText}>Engineer</span>
                 </h1>
               </div>
-            </div>
-
             <div className={styles.hero__row} data-hero-fade>
               <h1 className={styles.hero__title}>
                 <span className={styles.hero__titleText}>Wenting</span>
@@ -143,6 +139,8 @@ export function Hero() {
                 <span className={styles.hero__titleText}>Yong</span>
               </h1>
             </div>
+            </div>
+
           </div>
 
           <h2 className={styles.hero__subtitle} data-hero-fade>

@@ -54,6 +54,11 @@
     --radius-lg: #{fluid-clamp(12px, 20px)};
     --radius-pill: 999px;
 
+    // Menu
+    --menu-angle: -45deg;
+    --menu-toggle-size: clamp(64px, 8vw, 92px);
+    
+
     // Motion
     --motion-fast: 160ms;
     --motion-medium: 320ms;
@@ -91,6 +96,7 @@ $fs-h3: var(--fs-h3);
 $fs-body: var(--fs-body);
 $fs-nav: var(--fs-nav);
 $fs-small: var(--fs-small);
+$fs-cursor: var(--fs-cursor);
 
 $frame-width: var(--frame-width);
 $frame-height: var(--frame-height);
@@ -118,6 +124,10 @@ $spacing-md: var(--space-md);
 $spacing-lg: var(--space-lg);
 $spacing-xl: var(--space-xl);
 $spacing-2xl: var(--space-2xl);
+
+$menu-angle: var(--menu-angle);
+$menu-toggle-size: var(--menu-toggle-size);
+
 
 $motion-fast: var(--motion-fast);
 $motion-medium: var(--motion-medium);

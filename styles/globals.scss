@@ -105,11 +105,14 @@ small {
 }
 
 main {
+  position: relative;
   min-height: 100dvh;
+  z-index: var(--z-os);
+  background-color: $color-bg;
+  color: $color-fg;
 }
 
 .crt-frame {
-  position: relative;
   isolation: isolate;
   width: var(--frame-w, auto);
   max-width: 100%;
@@ -119,20 +122,23 @@ main {
   --accent: var(--frame-accent);
   --frame-bg: var(--color-bg);
   --bg: var(--frame-bg);
+  --frameBottom: 99.3%; 
+  --cut: calc(#{$menu-toggle-size} * 1.2);        
   --frame-poly: polygon(
-    0% 0%,
-    76.7% 0%,
-    100% 24%,
-    100% 99.3%,
-    23.3% 99.3%,
-    0% 75.5%
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% var(--frameBottom),
+    var(--cut) var(--frameBottom),
+    0 calc(var(--frameBottom) - var(--cut))
   );
+
   --poly: var(--frame-poly);
   --line-w: 60%;
   --line-h: clamp(6px, 1vw, 12px);
   --line-offset: 0.5dvw;
 
-  --line-poly: polygon(0 0, 0 100%, 100% 100%, 82% 0);
+  --line-poly: polygon(0 0, 0 100%, 100% 100%, 90% 0);
   --line-color: var(--accent);
 
   &::before,
@@ -214,6 +220,58 @@ main {
   }
 }
 
+.cursor {
+  color: $color-accent;
+  filter: $bloom-accent;
+  font-size: $fs-cursor;
+  line-height: 1;
+
+}
+
+.u-bloomAccent {
+  filter: $bloom-accent;
+}
+
+.u-bloomStatus {
+  filter: $bloom-status;
+}
+
+@keyframes uiCursorBreath {
+  0% {
+    opacity: 0.55;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+  100% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+.u-cursorBreath {
+  animation: uiCursorBreath var(--motion-slow) var(--motion-ease) infinite;
+  will-change: filter, opacity;
+}
+
+.u-activeHighlightAccent {
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -0.1em -0.22em;
+    border-radius: 2px;
+    background: var(--color-accent);
+    opacity: 0.18;
+    z-index: -1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-fast: 0.01ms;
@@ -227,5 +285,10 @@ main {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .u-cursorBreath {
+    animation: none !important;
+    filter: none !important;
   }
 }

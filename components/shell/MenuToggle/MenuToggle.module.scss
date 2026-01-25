@@ -1,0 +1,119 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.menuToggle {
+  position: fixed;
+  left: $spacing-2xl;
+  bottom: $spacing-xl;
+  width: $menu-toggle-size;
+  height: $menu-toggle-size;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: $color-bg;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-family: $font-mono;
+  font-size: calc(#{$fs-nav} * 0.78);
+  line-height: 1;
+  z-index: var(--z-ui);
+  pointer-events: auto;
+  transition: border $motion-medium $motion-ease, background-color $motion-medium $motion-ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $color-accent;
+    clip-path: polygon(0 100%, 0 0, 100% 100%);
+    box-sizing: border-box;
+    transition: filter $motion-medium $motion-ease, background-color $motion-medium $motion-ease;
+  }
+
+  &:hover {
+    &::before {
+      background: $color-bg;
+      border: var(--frame-stroke, clamp(1px, 0.2vw, 3px)) solid $color-accent;
+      filter: none;
+    }
+
+    .menuToggle__glyph {
+      color: $color-accent;
+    }
+
+    .menuToggle__label::before,
+    .menuToggle__label::after {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: $spacing-2xs;
+  }
+
+  &:focus-visible::before {
+    filter: $bloom-accent;
+  }
+
+  &:focus-visible .menuToggle__label::before,
+  &:focus-visible .menuToggle__label::after {
+    opacity: 1;
+  }
+}
+
+.menuToggle__glyph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30%;
+  padding-right: 30%;
+  font-size:4em;
+  color: $color-bg;
+  z-index: 1;
+  transition: transform $motion-medium $motion-ease, color $motion-medium $motion-ease;
+}
+
+.menuToggle__label {
+  position: absolute;
+  font-size: var(--fs-menu);
+  top: 30%;
+  left: 10%;
+  transform: rotate(45deg);
+  transform-origin: right top;
+  z-index: 1;
+  transition: opacity $motion-fast $motion-ease, transform $motion-fast $motion-ease;
+  color: $color-accent;
+
+  &.u-linkBracketHover {
+    color: $color-accent;
+
+    &:hover {
+      color: $color-accent;
+      filter: $bloom-accent;
+    }
+  }
+}
+
+.menuToggle--open {
+  .menuToggle__glyph {
+    transform: rotate(45deg) translateX(20%) translateY(10%);
+  }
+
+  .menuToggle__label {
+    opacity: 0;
+    transform: rotate(-45deg) translateY(6px);
+  }
+}
+
+@media (max-width: 768px) {
+  .menuToggle {
+    --menu-size: clamp(52px, 16vw, 72px);
+    left: $spacing-md;
+    bottom: $spacing-md;
+    font-size: calc(#{$fs-nav} * 0.7);
+  }
+}
