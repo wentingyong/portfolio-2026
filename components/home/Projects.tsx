@@ -1,3 +1,4 @@
+import { InteractiveGif } from '@/components/media/InteractiveGif/InteractiveGifClient'
 import styles from './Projects.module.scss'
 
 export function Projects() {
@@ -13,6 +14,14 @@ export function Projects() {
               <p>Project item {i + 1}</p>
             </div>
           ))}
+        </div>
+        <div className={styles.projects__gifWrap}>
+          <InteractiveGif
+            className={styles.projects__gif}
+            fill
+            sourceType="video"
+            src="/ascii-art.webm"
+          />
         </div>
       </div>
     </section>
