@@ -1,3 +1,7 @@
+---
+name: portfolio-foundation-next-sass-bem-gsap-r3f
+description: "A comprehensive skill guide for building modern portfolio websites using Next.js 14+ with TypeScript, Sass Modules with BEM methodology, GSAP for advanced animations, and React Three Fiber for 3D visual elements. Implements a three-layer architecture separating skeleton DOM, canvas effects, and chaos overlays."
+---
 # SKILL: portfolio-foundation-next-sass-bem-gsap-r3f
 
 ## Intent

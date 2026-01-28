@@ -1,3 +1,7 @@
+---
+name: portfolio-design-tokens-fluid-system
+description: Create a single source of truth for responsive spacing, typography, and layout tokens using CSS variables and Sass helpers. Implements fluid typography with modular stacking and minimal breakpoints.
+---
 # SKILL: portfolio-design-tokens-fluid-system
 
 ## Intent

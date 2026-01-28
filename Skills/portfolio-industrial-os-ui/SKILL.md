@@ -1,3 +1,7 @@
+---
+name: portfolio-industrial-os-ui
+description: Build Layer 1 skeleton with neo-brutalist bento grid, industrial UI styling, thick black borders, and a bottom-left dashboard menu. Enforces visual hierarchy with strict grid structure and bold typography.
+---
 # SKILL: portfolio-industrial-os-ui
 
 ## Intent

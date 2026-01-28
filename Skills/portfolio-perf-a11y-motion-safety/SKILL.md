@@ -1,3 +1,7 @@
+---
+name: portfolio-perf-a11y-motion-safety
+description: Define performance, accessibility, and motion safety rules to ensure the portfolio remains fast and usable. Covers animation optimization, reduced-motion compliance, accessibility standards, and jank prevention.
+---
 # SKILL: portfolio-perf-a11y-motion-safety
 
 ## Intent

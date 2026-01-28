@@ -1,3 +1,7 @@
+---
+name: portfolio-r3f-crt-medium
+description: Build the global R3F "Medium layer" (Layer 2) with CRT/ASCII filtered visuals, postprocessing effects (scanlines, noise, curvature, bloom, RGB shift), and quality presets. Fixed full-viewport canvas with reduced-motion support.
+---
 # SKILL: portfolio-r3f-crt-medium
 
 ## Intent

@@ -1,3 +1,7 @@
+---
+name: portfolio-home-scroll-orchestrator
+description: Implement Home page scroll choreography with a pinned GSAP timeline orchestrating horizontal hero transitions, About section hold/animation, Projects/Blogs vertical scroll, and CTA. Desktop and mobile fallback behavior included.
+---
 # SKILL: portfolio-home-scroll-orchestrator
 
 ## Intent
