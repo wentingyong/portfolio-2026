@@ -173,7 +173,7 @@ export function HomeExperience() {
           wiredLogRef.current = true
         }
 
-      const aboutStart = timeline.labels.about_boot ?? timeline.duration()
+        const aboutStart = timeline.labels.about_boot ?? timeline.duration()
         buildAboutSectionTimeline({
           masterTl: timeline,
           aboutPanel: aboutPanel,

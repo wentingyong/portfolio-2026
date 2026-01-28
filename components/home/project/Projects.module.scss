@@ -291,6 +291,24 @@
   pointer-events: auto;
 }
 
+.projects__gifWrap {
+  position: relative;
+  width: 100dvw;
+  height: clamp(260px, 60dvh, 720px);
+  margin-top: clamp(2rem, 5vw, 4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 3px solid #000;
+  box-sizing: border-box;
+}
+
+.projects__gif {
+  width: 100%;
+  height: 100%;
+}
+
+
 @media (max-width: 768px) {
   .projects__card {
     aspect-ratio: auto;
