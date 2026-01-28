@@ -6,6 +6,7 @@ import { projects } from '@/lib/projects-data'
 import Image from 'next/image'
 import { initProjectsAnim } from './project.anim'
 import styles from './Projects.module.scss'
+import { InteractiveGif } from '@/components/media/InteractiveGif/InteractiveGifClient'
 
 export function Projects() {
   const rootRef = useRef<HTMLElement | null>(null)
@@ -161,7 +162,14 @@ export function Projects() {
             )
           })}
         </div>
-    
+            <div className={styles.projects__gifWrap}>
+          <InteractiveGif
+            className={styles.projects__gif}
+            fill
+            sourceType="video"
+            src="/ascii-art.webm"
+          />
+        </div>
     </section>
   )
 }
