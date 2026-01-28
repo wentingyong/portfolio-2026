@@ -41,6 +41,64 @@ export type ProjectType = {
 export const projects: ProjectType[] = [
   {
     id: 1,
+    name: "Ikebana International Website",
+    slug: "ikebana-international",
+    role: "Full-Stack Developer | Creative Designer",
+    year: 2024,
+    location: "Canada",
+    shortDescription: "An event-centric mobile game platform featuring real-time challenges, dynamic questions, participant leaderboards, and an intuitive admin interface.",
+    description: `
+      <p>Ikebana International is a comprehensive website redesign project for the Ottawa Centennial Chapter No.120 of Ikebana International. The project involved creating a modern, elegant digital presence that reflects the artistry and cultural significance of Japanese flower arrangement.</p>
+
+      <p>As the Full-Stack Developer and Creative Designer, I was responsible for both the visual design and technical implementation. The site features a custom CMS for event management, a gallery system for showcasing ikebana arrangements, and membership management functionality.</p>
+
+      <p>The design draws inspiration from traditional Japanese aesthetics while maintaining modern web standards for accessibility and performance.</p>
+    `,
+    timeline: "January 2024 - March 2024",
+    src: "ikebana.png",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "SASS",
+      "Contentful CMS",
+      "Vercel"
+    ],
+    tags: ["Full-stack Development", "Creative Design", "CMS Integration"],
+    features: [
+      "Custom content management system",
+      "Event registration and management",
+      "Gallery showcase with lightbox",
+      "Membership portal",
+      "Bilingual support (English/French)",
+      "Responsive design for all devices"
+    ],
+    gallery: [
+      "homepage.jpg",
+      "gallery.jpg",
+      "events.jpg"
+    ],
+    results: [
+      {
+        title: "Enhanced Digital Presence",
+        description: "Modernized the chapter's online presence with a contemporary design."
+      },
+      {
+        title: "Improved Engagement",
+        description: "Increased member engagement through integrated event management."
+      },
+      {
+        title: "Accessibility",
+        description: "Achieved WCAG 2.1 AA compliance for inclusive access."
+      }
+    ],
+    details: "Designed and developed a comprehensive website for Ikebana International's Ottawa Centennial Chapter, featuring event management, gallery showcases, and membership functionality with bilingual support.",
+    nextProject: {
+      name: "Bell Summer Games",
+      slug: "bell-summer-games"
+    }
+  },
+  {
+    id: 2,
     name: "Bell Summer Games",
     slug: "bell-summer-games",
     role: "Front-end Developer | Creative Developer",
@@ -55,7 +113,7 @@ export const projects: ProjectType[] = [
       <p>The platform was built with a focus on scalability, allowing it to handle varying numbers of participants without performance degradation. The admin dashboard gives event facilitators complete control over the game flow, question management, and participant tracking.</p>
     `,
     timeline: "June 2022 - September 2022",
-    src: "bell-summer-games.jpg",
+    src: "bell-summer-games.png",
     stack: [
       "React", 
       "Redux", 
@@ -117,7 +175,7 @@ export const projects: ProjectType[] = [
     }
   },
   {
-    id: 2,
+    id: 3,
     name: "The Secret Life of Monsters",
     slug: "secret-life-of-monsters",
     role: "Front-end Developer",
@@ -132,7 +190,7 @@ export const projects: ProjectType[] = [
       <p>One of the technical challenges was optimizing the rendering of high-resolution images across diverse display sizes while maintaining performance and visual quality. Through careful implementation and testing, we achieved a 25% improvement in rendering efficiency.</p>
     `,
     timeline: "October 2022 - December 2022",
-    src: "secret-life-of-monsters.jpg",
+    src: "secret-life-of-monsters.png",
     stack: [
       "Next.js", 
       "Framer Motion", 
@@ -194,7 +252,7 @@ export const projects: ProjectType[] = [
     }
   },
   {
-    id: 3,
+    id: 4,
     name: "College Brebeuf Touchscreen Wall",
     slug: "college-brebeuf-touchscreen",
     role: "Full-stack Developer",
@@ -209,7 +267,7 @@ export const projects: ProjectType[] = [
       <p>The project required careful consideration of performance optimization for handling large numbers of high-resolution images while maintaining responsive touch interactions. The administrative dashboard allows staff to easily manage and update the photo collection.</p>
     `,
     timeline: "January 2023 - March 2023",
-    src: "college-brebeuf-touchscreen.jpg",
+    src: "college-brebeuf-touchscreen.png",
     stack: [
       "React", 
       "RESTful APIs", 
