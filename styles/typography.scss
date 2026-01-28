@@ -8,12 +8,14 @@
 
   --fs-h1: clamp(96px, min(13.8889vw, 22svh), 356px);
   --fs-h2: #{fluid-clamp(28px, 48px)};
-  --fs-h3: #{fluid-clamp(16px, 24px)};
+  --fs-h2-large: #{fluid-clamp(48px, 64px)};
+  --fs-h3: clamp(32px,3vw,72px);
   --fs-body: #{fluid-clamp(14px, 16px)};
   --fs-nav: #{fluid-clamp(14px, 20px)};
   --fs-menu: #{fluid-clamp(16px, 24px)};
   --fs-cursor: #{fluid-clamp(16px, 24px)};
   --fs-small: #{fluid-clamp(11px, 18px)};
+  --fs-project-detail: clamp(12px, 2cqi, 22px);
 
   --lh-tight: 0.9;
   --lh-normal: 1.6;

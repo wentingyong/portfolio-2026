@@ -1,0 +1,315 @@
+.projects {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: $spacing-xl $spacing-2xl;
+  background-color: $color-bg;
+  color: $color-fg;
+  // margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 64px);
+}
+
+.projects__header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  aspect-ratio: 1373 / 116;
+  min-height: clamp(48px, 8vw, 80px);
+}
+
+.projects__headerFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--color-accent);
+  pointer-events: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.projects__headerSvg {
+  width: 100%;
+  display: block;
+  height: 100%;
+  object-fit: contain;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.projects__headerTitle {
+  position: relative;
+  font-size: $fs-h2-large;
+  z-index: 1;
+  color: var(--color-accent);
+  margin: 0;
+  padding-left: clamp(48px, 15vw, 120px);
+}
+
+.projects__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.projects__card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1300 / 363;
+  min-height: clamp(260px, 22vw, 420px);
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+
+}
+
+.projects__cardInner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 546fr 740fr;
+  width: 100%;
+  height: 100%;
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.projects__imageContainer {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  max-width: none;
+  opacity: 1;
+  padding: 13% 8%;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) var(--motion-ease);
+}
+
+.projects__imageFrame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+
+}
+
+.projects__frameSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: block;
+  object-fit: contain;
+}
+
+.projects__frameSvg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.projects__imageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.projects__imageMedia {
+  object-fit: cover;
+}
+
+.projects__contentContainer {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  max-width: none;
+  gap: clamp(10px, 2vw, 20px);
+}
+
+.projects__index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  inset: 0;
+  text-transform: uppercase;
+  color: $color-accent;
+}
+
+.projects__contentLink {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 4% 8% 8%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: var(--space-sm);
+
+}
+
+.projects__cardFrame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.projects__titleWrapper {
+  position: relative;
+  width: 100%;
+  text-align: right;
+
+}
+
+.projects__titleText {
+  position: relative;
+  z-index: 1;
+  color: $color-accent;
+  text-transform: uppercase;
+
+}
+
+
+.projects__titleLine {
+  width: 100%;
+  height: 1px;
+  background-color: $color-accent;
+}
+
+.projects__detailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vw, 20px);
+}
+
+.projects__detailRow {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(10px, 2vw, 20px);
+}
+
+.projects__detailLabel {
+  font-size: $fs-project-detail;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $color-accent;
+  white-space: nowrap;
+}
+
+.projects__roles {
+  font-size: $fs-project-detail;
+  color: $color-accent;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex: 1;
+  min-width: 0;
+}
+
+.projects__overview {
+  font-size: $fs-project-detail;
+  max-width: 48ch;
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.projects__cta {
+  margin-top: clamp(8px, 1.5vw, 16px);
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: auto;
+}
+
+
+.projects__ctaText {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: $fs-project-detail;
+  background: transparent;
+  color: $color-accent;
+  text-transform: uppercase;
+
+  transition:
+    color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    background var(--motion-fast) var(--motion-ease);
+}
+
+.projects__contentLink:hover .u-linkBracketHover::before,
+.projects__contentLink:hover .u-linkBracketHover::after,
+.projects__contentLink:focus-visible .u-linkBracketHover::before,
+.projects__contentLink:focus-visible .u-linkBracketHover::after,
+.projects__contentContainer:has(.projects__contentLink:hover) .u-linkBracketHover::before,
+.projects__contentContainer:has(.projects__contentLink:hover) .u-linkBracketHover::after,
+.projects__contentContainer:has(.projects__contentLink:focus-visible) .u-linkBracketHover::before,
+.projects__contentContainer:has(.projects__contentLink:focus-visible) .u-linkBracketHover::after {
+  opacity: 1;
+}
+
+
+
+.projects__contentLink:hover ~ .projects__imageContainer,
+.projects__contentLink:focus-visible ~ .projects__imageContainer,
+.projects__card:has(.projects__contentLink:hover) .projects__imageContainer,
+.projects__card:has(.projects__contentLink:focus-visible) .projects__imageContainer {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .projects__card {
+    aspect-ratio: auto;
+    min-height: unset;
+  }
+
+  .projects__cardInner {
+    grid-template-columns: 1fr;
+  }
+
+  .projects__imageContainer,
+  .projects__content {
+    height: auto;
+    min-height: 0;
+  }
+
+  .projects__imageContainer {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,33 @@
+.crt {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  text-shadow: 0 0 6px rgba(255, 153, 0, 0.28);
+  letter-spacing: 0.04em;
+}
+
+.crtCaret {
+  display: inline-block;
+  width: 0.65ch;
+  height: 1em;
+  margin-left: 0.12em;
+  background: currentColor;
+  opacity: 0;
+}
+
+.crt[data-crt-typing='true'] .crtCaret {
+  opacity: 1;
+  animation: crtBlink 0.9s steps(1, end) infinite;
+}
+
+@keyframes crtBlink {
+  0%,
+  45% {
+    opacity: 0;
+  }
+
+  46%,
+  100% {
+    opacity: 1;
+  }
+}
