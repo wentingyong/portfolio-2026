@@ -5,7 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Hero } from './hero/Hero'
 import { About } from './about/About'
-import { Projects } from './Projects'
+import { Projects } from './project/Projects'
 import { Blogs } from './Blogs'
 import { CTA } from './CTA'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
@@ -49,6 +49,11 @@ export function HomeExperience() {
     const hasSequence = Boolean(sequenceRef.current)
     const hasTrack = Boolean(horizontalTrackRef.current)
     if (!hasSequence || !hasTrack || !enableChoreography) return
+
+    const previousScrollRestoration = window.history.scrollRestoration
+    window.history.scrollRestoration = 'manual'
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    ScrollTrigger.clearScrollMemory()
 
     const ctx = gsap.context(() => {
       const sequence = sequenceRef.current!
@@ -263,6 +268,7 @@ export function HomeExperience() {
 
     return () => {
       ctx.revert()
+      window.history.scrollRestoration = previousScrollRestoration
     }
   }, [enableChoreography, reducedMotion])
 
