@@ -1,0 +1,344 @@
+@use '../../styles/tokens' as *;
+@use '../../styles/motion';
+
+// ============================================
+// Landing Component - System Wake Experience
+// Layout: Centered container with boot sequence and main content
+// BEM naming within CSS Module
+// ============================================
+
+.landing {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-ui) + 10);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $crt-bg;
+  color: $crt-primary;
+  font-family: $font-mono;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform, opacity;
+
+  // Noise overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 1;
+    animation: motion-noiseDrift 10s linear infinite;
+
+    @include reducedMotion {
+      animation: none;
+    }
+  }
+
+  // Scanline sweep
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 136, 0, 0.05) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+    animation: motion-scanSweep 4s linear infinite;
+
+    @include reducedMotion {
+      animation: none;
+      display: none;
+    }
+  }
+
+  // Modifier: exiting state
+  &--exiting {
+    pointer-events: none;
+  }
+}
+
+// ============================================
+// Container - Centered box for all content
+// ============================================
+
+.landing__container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  z-index: 10;
+
+  @include down('md') {
+    padding: $spacing-md;
+  }
+}
+
+// ============================================
+// Boot Section - Top Left aligned
+// ============================================
+
+.landing__boot {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-2xs;
+  text-align: left;
+  margin-bottom: $spacing-xl;
+}
+
+// Boot line - plain text, no bloom effect
+.landing__bootLine {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  line-height: 1.4;
+  color: $crt-primary;
+  text-shadow: none; // No bloom for boot sequence
+  opacity: 0;
+  animation: fadeSlideIn 0.5s ease-out forwards;
+
+  // Accent variant for "SYSTEM READY" - still no bloom
+  &--accent {
+    color: $crt-bright;
+    text-shadow: none;
+  }
+}
+
+// Staggered animation delays for boot lines
+@for $i from 1 through 4 {
+  .landing__bootLine:nth-child(#{$i}) {
+    animation-delay: #{($i - 1) * 0.3 + 0.1}s;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// Main Section - Centered content
+// ============================================
+
+.landing__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+// ============================================
+// Roles - Side by Side
+// ============================================
+
+.landing__roles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-xs;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeSlideIn 0.5s ease-out 2.8s forwards;
+
+  @include down('sm') {
+    flex-direction: column;
+    gap: $spacing-2xs;
+  }
+}
+
+.landing__role {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  color: $crt-primary;
+  text-shadow: none; // No bloom
+}
+
+.landing__rolesSeparator {
+  color: rgba(255, 136, 0, 0.3);
+  font-size: 0.8rem;
+
+  @include down('sm') {
+    display: none;
+  }
+}
+
+// ============================================
+// Loading section
+// ============================================
+
+.landing__loading {
+  margin-top: $spacing-md;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  color: $crt-dim;
+  text-shadow: none;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fadeSlideIn 0.5s ease-out 3.2s forwards;
+}
+
+// ============================================
+// Prompt / CTA section
+// ============================================
+
+// Prompt timing: 5s delay (after loading completes)
+.landing__prompt {
+  margin-top: $spacing-xl;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeSlideIn 0.6s ease-out 5s forwards;
+}
+
+.landing__promptBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-family: $font-mono;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: $crt-primary;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-sm;
+  text-shadow: none; // No bloom
+
+  &:focus-visible {
+    @include focusRing(#ff8800);
+  }
+
+  // Hover state - just cursor change, no background
+  &--hover {
+    .landing__cursor {
+      animation: none;
+      opacity: 1;
+      background-color: $crt-bright;
+    }
+  }
+}
+
+.landing__promptSymbol {
+  color: $crt-secondary;
+  margin-right: 0.25em;
+}
+
+.landing__promptText {
+  white-space: nowrap;
+}
+
+.landing__cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  margin-left: 5px;
+  background-color: $crt-primary;
+  vertical-align: middle;
+  animation: motion-cursorBlink 0.8s step-end infinite;
+
+  @include reducedMotion {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+.landing__executing {
+  display: block;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: $crt-bright;
+  text-shadow: none; // No bloom
+  letter-spacing: 0.04em;
+  min-height: 1.5em;
+  margin-top: $spacing-sm;
+}
+
+.landing__idle {
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  color: rgba(255, 136, 0, 0.6);
+  letter-spacing: 0.04em;
+  margin-top: $spacing-md;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity $motion-medium $motion-ease, transform $motion-medium $motion-ease;
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// Shutdown Line (CRT effect)
+// ============================================
+
+.landing__shutdownLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    $crt-primary 20%,
+    $crt-bright 50%,
+    $crt-primary 80%,
+    transparent 100%
+  );
+  opacity: 0;
+  z-index: 100;
+  box-shadow: 0 0 20px $crt-primary, 0 0 40px $crt-primary;
+  pointer-events: none;
+}
+
+// ============================================
+// Reduced motion support
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+  .landing {
+    &::before,
+    &::after {
+      animation: none;
+    }
+  }
+
+  .landing__bootLine,
+  .landing__roles,
+  .landing__loading {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .landing__prompt {
+    transition: none;
+  }
+
+  .landing__idle {
+    transition: none;
+  }
+}

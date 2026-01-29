@@ -1,0 +1,67 @@
+@use '../../styles/tokens' as *;
+
+// ============================================
+// CRT ASCII Logo Component
+// Orange CRT glow with typewriter line-by-line effect
+// BEM naming within CSS Module
+// ============================================
+
+.crtLogo {
+  font-family: $font-mono;
+  font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: pre;
+  color: $crt-primary;
+  margin: $spacing-lg 0;
+  text-align: center;
+
+  // Crisp text rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Minimal glow for crisp, readable text
+  text-shadow:
+    0 0 1px $crt-primary,
+    0 0 3px rgba(255, 136, 0, 0.5);
+
+  font-weight: 400;
+  will-change: opacity;
+
+  // Modifier: animation complete - remove will-change for perf
+  &--complete {
+    will-change: auto;
+  }
+
+  // Responsive adjustments
+  @include down('lg') {
+    font-size: clamp(0.42rem, 1.4vw, 0.52rem);
+  }
+
+  @include down('md') {
+    font-size: 0.38rem;
+    margin: $spacing-md 0;
+  }
+
+  @include down('sm') {
+    font-size: 0.3rem;
+  }
+}
+
+// Each line of the ASCII art - no horizontal displacement to keep alignment
+.crtLogo__line {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .crtLogo__line {
+    transition: none;
+    opacity: 1;
+  }
+}

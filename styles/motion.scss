@@ -1,0 +1,217 @@
+// ============================================
+// Global Motion Keyframes & Utilities
+// Reusable animations for the entire app
+// ============================================
+
+// Cursor blink - 1Hz solid block cursor
+@keyframes motion-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+// Scanline sweep - subtle CRT effect
+@keyframes motion-scanSweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+// Noise drift - subtle texture movement
+@keyframes motion-noiseDrift {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-2%, 1%);
+  }
+  50% {
+    transform: translate(1%, -1%);
+  }
+  75% {
+    transform: translate(-1%, 2%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+// Glitch jitter - subtle text displacement
+@keyframes motion-glitchJitter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    text-shadow: none;
+  }
+  10% {
+    transform: translate(-1px, 0);
+    text-shadow: 1px 0 var(--c-accent), -1px 0 var(--c-ink);
+  }
+  20% {
+    transform: translate(1px, 0);
+    text-shadow: -1px 0 var(--c-accent), 1px 0 var(--c-ink);
+  }
+  30% {
+    transform: translate(0, 1px);
+    text-shadow: 0 -1px var(--c-accent);
+  }
+  40%,
+  100% {
+    transform: translate(0, 0);
+    text-shadow: none;
+  }
+}
+
+// Spinner rotation for processing indicator
+@keyframes motion-spinnerChar {
+  0% {
+    content: '/';
+  }
+  25% {
+    content: '-';
+  }
+  50% {
+    content: '\\';
+  }
+  75% {
+    content: '|';
+  }
+  100% {
+    content: '/';
+  }
+}
+
+// Glow pulse for accent elements
+@keyframes motion-glowPulse {
+  0%,
+  100% {
+    text-shadow: 0 0 4px currentColor, 0 0 8px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 8px currentColor, 0 0 16px currentColor, 0 0 24px currentColor;
+  }
+}
+
+// Text reveal from left
+@keyframes motion-typeReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+// Cursor blink - block cursor style
+@keyframes motion-cursorBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+// CRT screen flicker (subtle)
+@keyframes motion-crtFlicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.95; }
+  10% { opacity: 0.98; }
+  15% { opacity: 0.96; }
+  20% { opacity: 0.99; }
+  25% { opacity: 0.94; }
+  30% { opacity: 0.98; }
+  35% { opacity: 0.97; }
+  40% { opacity: 0.95; }
+  45% { opacity: 0.98; }
+  50% { opacity: 1; }
+  55% { opacity: 0.96; }
+  60% { opacity: 0.98; }
+  65% { opacity: 0.97; }
+  70% { opacity: 0.95; }
+  75% { opacity: 0.99; }
+  80% { opacity: 0.96; }
+  85% { opacity: 0.98; }
+  90% { opacity: 0.97; }
+  95% { opacity: 0.95; }
+  100% { opacity: 0.98; }
+}
+
+// Fade in animation
+@keyframes motion-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Slide up fade in
+@keyframes motion-slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// Utility Classes (optional global helpers)
+// ============================================
+
+// Noise overlay pseudo-element mixin
+@mixin u-noiseOverlay($opacity: 0.03) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: $opacity;
+    pointer-events: none;
+    z-index: 1;
+    animation: motion-noiseDrift 8s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+}
+
+// Scanline sweep pseudo-element mixin
+@mixin u-scanSweep($color: rgba(255, 255, 255, 0.02)) {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      $color 50%,
+      transparent 100%
+    );
+    height: 4px;
+    width: 100%;
+    pointer-events: none;
+    z-index: 2;
+    animation: motion-scanSweep 4s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+      display: none;
+    }
+  }
+}
