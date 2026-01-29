@@ -85,6 +85,7 @@ export function Nav() {
   const { activePage, activeSectionId, isHomeRoute } = useActiveSection(NAV_PAGES)
   const isScrollingRef = useRef(false)
   const panelRef = useRef<HTMLElement | null>(null)
+  const [isLandingActive, setIsLandingActive] = useState(isHomeRoute)
 
   const handleToggle = useCallback(() => {
     setMenuOpen((prev) => !prev)
@@ -119,6 +120,30 @@ export function Nav() {
       }
     }
   }, [menuOpen, handleClickOutside])
+
+  useEffect(() => {
+    if (!isHomeRoute) {
+      setIsLandingActive(false)
+      return
+    }
+
+    const handleLandingStart = () => {
+      setMenuOpen(false)
+      setIsLandingActive(true)
+    }
+
+    const handleLandingComplete = () => {
+      setIsLandingActive(false)
+    }
+
+    window.addEventListener('landing:start', handleLandingStart)
+    window.addEventListener('landing:complete', handleLandingComplete)
+
+    return () => {
+      window.removeEventListener('landing:start', handleLandingStart)
+      window.removeEventListener('landing:complete', handleLandingComplete)
+    }
+  }, [isHomeRoute])
 
   const handleSectionNavigate = useCallback(
     (id: string) => {
@@ -173,8 +198,13 @@ export function Nav() {
     [isHomeRoute, isMobile, reducedMotion],
   )
 
+  const navIsHidden = isHomeRoute && isLandingActive
+  const navStyle = navIsHidden
+    ? { visibility: 'hidden', pointerEvents: 'none' as const }
+    : undefined
+
   return (
-    <>
+    <div aria-hidden={navIsHidden} style={navStyle}>
       <MenuToggle isOpen={menuOpen} onToggle={handleToggle} />
       <MenuPanel ref={panelRef} isOpen={menuOpen} navItems={MENU_ITEMS} activeId={activePage.id} />
       <PosBar
@@ -184,6 +214,6 @@ export function Nav() {
         activeSectionId={activeSectionId}
         onNavigate={handleSectionNavigate}
       />
-    </>
+    </div>
   )
 }

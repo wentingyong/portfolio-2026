@@ -26,6 +26,24 @@
     --color-border: var(--c-border);
     --color-status: var(--c-green);
 
+    // CRT Orange Glow Palette
+    --crt-primary: #ff8800;
+    --crt-secondary: #ff6600;
+    --crt-bright: #ffaa00;
+    --crt-dim: #cc6600;
+    --crt-bg: #0a0a0a;
+
+    // Glow radius levels
+    --glow-radius-1: 5px;
+    --glow-radius-2: 10px;
+    --glow-radius-3: 20px;
+    --glow-radius-4: 40px;
+
+    // CRT Animation timing
+    --typewriter-duration: 0.8s;
+    --typewriter-steps: 20;
+    --cursor-blink-duration: 0.8s;
+
     // Layout (1440x1080 frame baseline)
     --frame-width: 100dvw;
     --frame-height: 100dvh;
@@ -149,3 +167,31 @@ $bloom-status: drop-shadow(0 0 20px var(--color-status))
   drop-shadow(0 0 30px var(--color-status));
 $bloom-accent: drop-shadow(0 0 20px var(--color-accent))
   drop-shadow(0 0 30px var(--color-accent));
+
+// CRT SCSS aliases
+$crt-primary: var(--crt-primary);
+$crt-secondary: var(--crt-secondary);
+$crt-bright: var(--crt-bright);
+$crt-dim: var(--crt-dim);
+$crt-bg: var(--crt-bg);
+
+$glow-radius-1: var(--glow-radius-1);
+$glow-radius-2: var(--glow-radius-2);
+$glow-radius-3: var(--glow-radius-3);
+$glow-radius-4: var(--glow-radius-4);
+
+// CRT Glow text-shadow presets
+$crt-glow-soft:
+  0 0 var(--glow-radius-1) var(--crt-primary),
+  0 0 var(--glow-radius-2) var(--crt-primary);
+
+$crt-glow-medium:
+  0 0 var(--glow-radius-1) var(--crt-primary),
+  0 0 var(--glow-radius-2) var(--crt-primary),
+  0 0 var(--glow-radius-3) var(--crt-secondary);
+
+$crt-glow-intense:
+  0 0 var(--glow-radius-1) var(--crt-primary),
+  0 0 var(--glow-radius-2) var(--crt-primary),
+  0 0 var(--glow-radius-3) var(--crt-secondary),
+  0 0 var(--glow-radius-4) var(--crt-secondary);

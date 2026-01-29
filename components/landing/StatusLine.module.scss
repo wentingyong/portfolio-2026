@@ -1,0 +1,109 @@
+@use '../../styles/tokens' as *;
+@use '../../styles/motion';
+
+// ============================================
+// StatusLine - Reusable CRT text line component
+// BEM naming within CSS Module
+// ============================================
+
+.statusLine {
+  font-family: $font-mono;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  line-height: 1.4;
+  margin: $spacing-xs 0;
+  color: #00ff00; // Green like the HTML reference
+  text-shadow: 0 0 5px #00ff00, 0 0 10px rgba(0, 255, 0, 0.5);
+  white-space: nowrap;
+
+  // Initial hidden state - animate from left like typewriter
+  opacity: 0;
+  transform: translateX(-10px);
+  will-change: opacity, transform;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  // Element: prompt symbol
+  &__prompt {
+    color: #00cc00;
+    margin-right: 0.25em;
+  }
+
+  // Element: text content
+  &__text {
+    display: inline;
+  }
+
+  // Modifier: visible state
+  &--visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  // Modifier: status variant (default)
+  &--status {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00, 0 0 10px rgba(0, 255, 0, 0.4);
+  }
+
+  // Modifier: prompt variant (with > symbol)
+  &--prompt {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px rgba(0, 255, 0, 0.5);
+  }
+
+  // Modifier: loading variant - slightly dimmer
+  &--loading {
+    color: rgba(0, 255, 0, 0.7);
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+    letter-spacing: 0.02em;
+  }
+
+  // Modifier: accent variant (highlighted) - brighter glow
+  &--accent {
+    color: #00ff00;
+    text-shadow:
+      0 0 5px #00ff00,
+      0 0 10px #00ff00,
+      0 0 20px #00ff00;
+  }
+
+  // Modifier: typewriter effect
+  &--typewriter {
+    .statusLine__text {
+      overflow: hidden;
+      display: inline-block;
+      animation: motion-typeReveal var(--typewriter-duration) steps(var(--typewriter-steps)) forwards;
+
+      @include reducedMotion {
+        animation: none;
+        overflow: visible;
+      }
+    }
+  }
+
+  // Modifier: animation complete - remove will-change for perf
+  &--complete {
+    will-change: auto;
+  }
+
+  // Responsive
+  @include down('md') {
+    font-size: 0.8rem;
+  }
+
+  @include down('sm') {
+    font-size: 0.75rem;
+    white-space: normal;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .statusLine {
+    transition: none;
+    transform: translateX(0);
+
+    &--visible {
+      opacity: 1;
+    }
+  }
+}
