@@ -34,13 +34,30 @@ export function LandingGate({
   forceShow = false,
   storageKey = DEFAULT_STORAGE_KEY,
 }: LandingGateProps) {
-  const [showLanding, setShowLanding] = useState<boolean | null>(null)
+  const [showLanding, setShowLanding] = useState(true)
 
-  // Check sessionStorage on mount
   useEffect(() => {
-    // Always show landing on page load/refresh
-    setShowLanding(true)
-  }, [])
+    const body = document.body
+    if (!body) return
+
+    if (showLanding) {
+      body.dataset.landing = 'active'
+      window.dispatchEvent(new CustomEvent('landing:start'))
+    } else {
+      delete body.dataset.landing
+      window.dispatchEvent(new CustomEvent('landing:complete'))
+    }
+
+    return () => {
+      delete body.dataset.landing
+    }
+  }, [showLanding])
+
+  useEffect(() => {
+    if (forceShow) {
+      setShowLanding(true)
+    }
+  }, [forceShow])
 
   // Handle landing completion
   const handleComplete = useCallback(() => {
@@ -49,11 +66,6 @@ export function LandingGate({
     // Hide landing and show children
     setShowLanding(false)
   }, [storageKey])
-
-  // Still determining initial state - show nothing
-  if (showLanding === null) {
-    return null
-  }
 
   // Show landing only - don't render children yet
   if (showLanding) {
